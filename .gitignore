@@ -1,0 +1,7 @@
+*.o
+*.swp
+*.so
+main
+*.mk
+*.layout
+*.ppm
