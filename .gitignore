@@ -7,3 +7,4 @@ main
 *.depend
 *.ppm
 .dropbox
+*.cbp
