@@ -6,3 +6,4 @@ main
 *.layout
 *.depend
 *.ppm
+.dropbox
