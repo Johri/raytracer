@@ -6,6 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <map>
 
 #include "camera.hpp"
 #include "light.hpp"
@@ -25,12 +26,13 @@ class scene
         scene(scene const& first_scene);
         ~scene();
 
-        void load_sdf (std::string const& sdf) const;
+        void load_sdf (std::string const& sdf);
 
     private:
-    //std::list <shape> shape_list_;
-    std::list <camera> camera_list_;
-    std::list <light> light_list_;
+    std::map<std::string, material> materials_;
+    std::list <shape*> shapes_;
+    std::list <camera> cameras_;
+    std::list <light> lights_;
 
 };
 

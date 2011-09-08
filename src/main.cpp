@@ -56,6 +56,8 @@ public :
     // the following code might also be executed in any method
     // just start your raytracing algorithm from here
 
+    std::cout << "read sdf file" << std::endl;
+    scene_.load_sdf("materials.sdf");
 
     // get glutwindow instance
     glutwindow& window = glutwindow::instance();
@@ -71,20 +73,10 @@ public :
         // create pixel at x,y
         pixel p(x, y);
 
-        example_math3d(); //Warum??? Ohne ist es schneller!
-
+        //ray r = scene_.main_camera().calc_eye_ray(x,y);
+        //color c = renderer_.raytrace(r);
         // size of a tile in checkerboard
-        const std::size_t checkersize = 7;
-
-        // compute color for pixel
-        if ( ((x/checkersize)%3) != ((y/checkersize)%2))
-        {
-	        p.rgb = color(0.0, 1.0, float(x)/window.height());
-        }
-        else
-        {
-          p.rgb = color(1.0, 0.0, float(y)/window.width());
-        }
+        //p.rgb = c;
 
         // write pixel to output window
         window.write(p);
@@ -126,7 +118,8 @@ public :
 private : // attributes
 
   // you may add your scene description here
-
+  scene scene_;
+  //renderer renderer_;
 };
 
 

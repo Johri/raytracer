@@ -5,27 +5,26 @@
 
 
 scene::scene()
-
+  : materials_()// initializer_list
 {
+    std::cerr << "Hallo Martin: initializer_list !!!" << std::endl;
     //ctor
 }
 
 scene::~scene()
 {
+    std::cerr << "Error: shapes not deleted" << std::endl;
     //dtor
 }
 
 void
-scene::load_sdf(std::string const& sdf) const
+scene::load_sdf(std::string const& sdf)
 {
-     std::ifstream fs("material.sdf");
+     std::ifstream fs(sdf.c_str());
 
     if (fs.is_open())
     {
-        material_map mat_map;
-        std::list<light> light_list;
-        std::list<camera> camera_list;
-        //std::list<shape> shape_list;
+
         std::string line;
         while(std::getline (fs, line))
         {
@@ -118,8 +117,7 @@ scene::load_sdf(std::string const& sdf) const
                         color ka (kar, kag, kab);
                         color kd (kdr, kdg, kdb);
                         color ks (ksr, ksg, ksb);
-                        material* mtr = new material (name, ka, kd, ks, m);
-                        mat_map.add("mtr",mtr);
+                        materials_["mtr"] = material(name, ka, kd, ks, m);
                     }
                     else
                     {
@@ -153,8 +151,8 @@ scene::load_sdf(std::string const& sdf) const
                                 std::cout<<mat_name<<std::endl;
                                 point3d p1_ (p1x, p1y, p1z);
                                 point3d p2_ (p2x, p2y, p2z);
-                                //box box (name, for, p1_, p2_);
-                                //shape_list_.push_back(box);
+                                shape* b = new box (name, materials_[mat_name], p1_, p2_);
+                                shapes_.push_back(b);
                             }
                             else
                             {
@@ -177,6 +175,8 @@ scene::load_sdf(std::string const& sdf) const
                                     std::string clr;
                                     ss>>clr;
                                     std::cout<<clr<<std::endl;
+                                    shape* s = new sphere(name, materials_[clr], radius,point3d(x,y,z));
+                                    shapes_.push_back(s);
                                 }
                             }
                         }
@@ -249,7 +249,7 @@ scene::load_sdf(std::string const& sdf) const
             ss.clear();
     }
     std::cout<<"\n"<<"\n"<<std::endl;
-    mat_map.get_all();
+
 
 
     }
