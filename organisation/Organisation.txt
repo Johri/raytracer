@@ -1,0 +1,27 @@
+Anastasiya:
+Lichtklasse um 2 Attribute erweitert!
+
+
+Objekte geändert: Shape bekommt die Methoden getMaterial()
+und makeNormal(<---Normale am Schnittpunkt für spätere Lichtberechnung);
+
+Einige Tests geschrieben, die noch nicht funktionieren.(ich Kriegs schon hin)
+
+Ok, das Dreieck funktioniert schon mal.
+
+Die anderen Objekte bis jetzt nur mit positiven Werten.
+
+6.Seite zu box.cpp hinzugefügt.
+
+Martin:
+Hab einige Klassen von dir übernommen und erweitert, weil wir mit unterschiedlichen datein arbeiten... und wir schnell den überblick verlieren könnten.
+Alle print_on funktionen funktionieren.
+sdf_loader macht probleme. muss von material_liste auf material_map umsteigen.
+extra Klasse für material_map angelegt.
+Simon wegen sdf_loader angeschrieben.
+
+
+
+Wir können am donnerstag genaueres austauschen... schau dir mein zeug an wenn du magst...
+Ich werd mir deine Dateien im bezug auf änderungen nochmal anschauen und defiziete bei mir ausgleichen... was bei dir fehlt ist denk ich weniger relevant.
+ich denke wir nehmen meinen raytracer zur vorstellung... bei mir funktioniert momentan fast alles bis auf der UnitTest++.

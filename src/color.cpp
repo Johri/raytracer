@@ -60,7 +60,7 @@ color::print(std::ostream& os) const
 
 
 ////////////////////////////////////////////////////////////////////////////////
-color::value_t& 
+color::value_t&
 color::operator[](unsigned c)
 {
   return data_[c];
@@ -69,8 +69,8 @@ color::operator[](unsigned c)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-const color::value_t& 
-color::operator[](unsigned c) const 
+const color::value_t&
+color::operator[](unsigned c) const
 {
   return data_[c];
 }
@@ -78,7 +78,7 @@ color::operator[](unsigned c) const
 
 
 ////////////////////////////////////////////////////////////////////////////////
-color& 
+color&
 color::operator=(color const& rhs)
 {
   color tmp(rhs);
@@ -88,9 +88,9 @@ color::operator=(color const& rhs)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-void 
-color::operator+=(color const& a) 
-{ 
+void
+color::operator+=(color const& a)
+{
   data_[0]+=a.data_[0];
   data_[1]+=a.data_[1];
   data_[2]+=a.data_[2];
@@ -98,8 +98,8 @@ color::operator+=(color const& a)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-color 
-operator+(color const& a, color const& b) 
+color
+operator+(color const& a, color const& b)
 {
   color result(a);
   result += b;
@@ -108,8 +108,8 @@ operator+(color const& a, color const& b)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-std::ostream& 
-operator<<(std::ostream& os, color const& color) 
+std::ostream&
+operator<<(std::ostream& os, color const& color)
 {
   color.print(os);
   return os;

@@ -1,6 +1,7 @@
 #include <glutwindow.hpp>
 #include <ppmwriter.hpp>
 #include <pixel.hpp>
+#include <unittest++/UnitTest++.h>
 
 #include <iostream>
 #include <cmath>
@@ -11,12 +12,38 @@
 #include <vector.hpp>
 #include <matrix.hpp>
 #include <point.hpp>
+#include "material.hpp"
+#include "triangle.hpp"
+#include "box.hpp"
+#include "sphere.hpp"
+#include "scene.hpp"
+#include "tube.hpp"
+#include "cone.hpp"
 
 #ifdef __APPLE__
   #include <GLUT/glut.h>
 #else
   #include <GL/glut.h>
 #endif
+
+
+
+/*
+SUITE(ambient)
+{
+    TEST(get_reflectivity)
+    {
+        material mat;
+        CHECK_EQUAL(0, mat.get_reflectivity());
+    }
+}
+
+*/
+
+
+
+
+
 
 // this is a dummy raytrace application
 class application
@@ -29,8 +56,6 @@ public :
     // the following code might also be executed in any method
     // just start your raytracing algorithm from here
 
-    // size of a tile in checkerboard
-    const std::size_t checkersize = 20;
 
     // get glutwindow instance
     glutwindow& window = glutwindow::instance();
@@ -46,12 +71,18 @@ public :
         // create pixel at x,y
         pixel p(x, y);
 
-        example_math3d();
+        example_math3d(); //Warum??? Ohne ist es schneller!
+
+        // size of a tile in checkerboard
+        const std::size_t checkersize = 7;
 
         // compute color for pixel
-        if ( ((x/checkersize)%2) != ((y/checkersize)%2)) {
+        if ( ((x/checkersize)%3) != ((y/checkersize)%2))
+        {
 	        p.rgb = color(0.0, 1.0, float(x)/window.height());
-        } else {
+        }
+        else
+        {
           p.rgb = color(1.0, 0.0, float(y)/window.width());
         }
 
@@ -104,12 +135,48 @@ private : // attributes
 
 int main(int argc, char* argv[])
 {
+
+    material mat;
+    std::cout<<mat<<std::endl;
+
+    triangle tr;
+    std::cout<<tr<<std::endl;
+
+    box box;
+    std::cout<<box<<std::endl;
+
+    sphere kugel;
+    std::cout<<kugel<<std::endl;
+
+    point3d punkt (3,3,3);
+    color grau (0.8,0.8,0.5);
+    material betong ("Betong",(grau),(grau),(grau),0.1);
+    sphere ball ("Ball", betong, 2.0, (punkt));
+    std::cout<<ball<<std::endl;
+
+    tube conan;
+    std::cout<<conan<<std::endl;
+
+    cone tuba;
+    std::cout<<tuba<<std::endl;
+
+    ray r;
+    kugel.intersect(r);
+
+    scene die_scene;
+    //die_scene.load_sdf("material.sdf");
+
+
+
+
+
+
   // set resolution and checkersize
-  const std::size_t width = 400;
-  const std::size_t height = 400;
+  const std::size_t width = 500;
+  const std::size_t height = 500;
 
   // create output window
-  glutwindow::init(width, height, 100, 100, "CheckerBoard", argc, argv);
+  glutwindow::init(width, height, 1350, 510, "CheckerBoard", argc, argv);
 
   // create a ray tracing application
   application app;
@@ -125,3 +192,6 @@ int main(int argc, char* argv[])
 
   return 0;
 }
+
+
+
