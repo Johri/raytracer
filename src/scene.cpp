@@ -5,22 +5,32 @@
 
 
 scene::scene()
-  : materials_()// initializer_list
+: materials_(), shapes_(), cameras_(), lights_(), renderer_()
 {
-    std::cerr << "Hallo Martin: initializer_list !!!" << std::endl;
     //ctor
 }
 
 scene::~scene()
 {
-    std::cerr << "Error: shapes not deleted" << std::endl;
+    shapes_.clear();
+    std::cout<<std::endl;
+    std::cerr << "Error: shapes not deleted"<<"\n"<< std::endl;
     //dtor
 }
+
+
+camera const&
+scene::main_camera() const
+{
+    camera cam;
+    return cam;
+}
+
 
 void
 scene::load_sdf(std::string const& sdf)
 {
-     std::ifstream fs(sdf.c_str());
+     std::ifstream fs("material.sdf"/*sdf.c_str()*/);
 
     if (fs.is_open())
     {
@@ -37,6 +47,7 @@ scene::load_sdf(std::string const& sdf)
         	std::string type;
         	std::string geo;
         	std::string name;
+        	std::string mat_name;
         	std::string extra1="";
         	std::string extra2="";
         	std::string extra3="";
@@ -82,8 +93,8 @@ scene::load_sdf(std::string const& sdf)
                     ss>>type;
                     if (type=="material")
                     {
-                        ss>>name;
-                        std::cout<<def<<" "<<type<<" "<<name<<" ";
+                        ss>>mat_name;
+                        std::cout<<def<<" "<<type<<" "<<mat_name<<" ";
                         int kar;
                         ss>>kar;
                         std::cout<<kar<<" ";
@@ -117,7 +128,7 @@ scene::load_sdf(std::string const& sdf)
                         color ka (kar, kag, kab);
                         color kd (kdr, kdg, kdb);
                         color ks (ksr, ksg, ksb);
-                        materials_["mtr"] = material(name, ka, kd, ks, m);
+                        materials_[mat_name.c_str()] = material(mat_name, ka, kd, ks, m);
                     }
                     else
                     {
@@ -146,7 +157,7 @@ scene::load_sdf(std::string const& sdf)
                                 double p2z;
                                 ss>>p2z;
                                 std::cout<<p2z<<" ";
-                                std::string mat_name;
+
                                 ss>>mat_name;
                                 std::cout<<mat_name<<std::endl;
                                 point3d p1_ (p1x, p1y, p1z);
@@ -172,13 +183,54 @@ scene::load_sdf(std::string const& sdf)
                                     double radius;
                                     ss>>radius;
                                     std::cout<<radius<<" ";
-                                    std::string clr;
-                                    ss>>clr;
-                                    std::cout<<clr<<std::endl;
-                                    shape* s = new sphere(name, materials_[clr], radius,point3d(x,y,z));
+
+                                    ss>>mat_name;
+                                    std::cout<<mat_name<<std::endl;
+                                    shape* s = new sphere(name, materials_[mat_name], radius,point3d(x,y,z));
                                     shapes_.push_back(s);
                                 }
+                                else
+                                {
+                                    if(geo=="triangle")
+                                    {
+                                        ss>>name;
+                                        std::cout<<def<<" "<<type<<" "<<geo<<" "<<name<<" ";
+                                        double x1;
+                                        ss>>x1;
+                                        std::cout<<x1<<" ";
+                                        double y1;
+                                        ss>>y1;
+                                        std::cout<<y1<<" ";
+                                        double z1;
+                                        ss>>z1;
+                                        std::cout<<z1<<" ";
+                                        double x2;
+                                        ss>>x2;
+                                        std::cout<<x2<<" ";
+                                        double y2;
+                                        ss>>y2;
+                                        std::cout<<y2<<" ";
+                                        double z2;
+                                        ss>>z2;
+                                        std::cout<<z2<<" ";
+                                        double x3;
+                                        ss>>x3;
+                                        std::cout<<x3<<" ";
+                                        double y3;
+                                        ss>>y3;
+                                        std::cout<<y3<<" ";
+                                        double z3;
+                                        ss>>z3;
+                                        std::cout<<z3<<" ";
+
+                                        ss>>mat_name;
+                                        std::cout<<mat_name<<std::endl;
+                                        shape* t = new triangle (name, materials_[mat_name], point3d(x1, y1, z1), point3d(x2, y2, z2), point3d(x3, y3, z3));
+                                        shapes_.push_back(t);
+                                    }
+                                }
                             }
+
                         }
                         else
                         {
@@ -213,6 +265,8 @@ scene::load_sdf(std::string const& sdf)
                                 float Ldb;
                                 ss>>Ldb;
                                 std::cout<<Ldb<<std::endl;
+                                light l (name, point3d(x,y,z), color(Lar,Lag,Lab), color(Ldr,Ldg,Ldb));
+                                lights_.push_back(l);
                             }
                             else
                             {
@@ -220,9 +274,12 @@ scene::load_sdf(std::string const& sdf)
                                 {
                                     ss>>name;
                                     std::cout<<def<<" "<<type<<" "<<name<<" ";
-                                    float fov;
+                                    double fov;
                                     ss>>fov;
                                     std::cout<<fov<<std::endl;
+                                    camera c (name, point3d(0,0,0), fov);
+                                    cameras_.push_back(c);
+
                                 }
                             }
                         }
@@ -238,17 +295,37 @@ scene::load_sdf(std::string const& sdf)
                         std::string img;
                         ss>>img;
                         std::cout<<img<<" ";
-                        int pixels_higth;
-                        ss>>pixels_higth;
-                        int pixels_width;
-                        ss>>pixels_width;
-                        std::cout<<pixels_higth<<" "<<pixels_width<<std::endl;
+                        int res_x;
+                        ss>>res_x;
+                        int res_y;
+                        ss>>res_y;
+                        std::cout<<res_x<<" "<<res_y<<std::endl;
+                        renderer r(name,wtr,res_x,res_y);
                     }
                 }
             }
             ss.clear();
     }
     std::cout<<"\n"<<"\n"<<std::endl;
+    for(std::map<std::string, material>::iterator i=materials_.begin(); i!=materials_.end(); ++i)
+    {
+        std::cout<<i->first<<" "<<i->second<<std::endl;
+    }
+
+    for(std::list<shape*>::iterator i=shapes_.begin(); i!=shapes_.end(); ++i)
+    {
+        std::cout<<**i<<std::endl;
+    }
+
+    for(std::list<light>::iterator i=lights_.begin(); i!=lights_.end(); ++i)
+    {
+        std::cout<<*i<<std::endl;
+    }
+
+    for(std::list<camera>::iterator i=cameras_.begin(); i!=cameras_.end(); ++i)
+    {
+        std::cout<<*i<<std::endl;
+    }
 
 
 

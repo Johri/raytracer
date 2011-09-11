@@ -21,14 +21,15 @@ shape(name, mtr), center_(center), radius_(rad), higth_(higth)
 
 cone::~cone()
 {
-	std::cout<<"Standardobjekt Cone gelöscht"<<"\n"<<std::endl;
+	std::cout<<"Cone gelöscht"<<"\n"<<std::endl;
 }
 
 
 
 
 double
-cone::get_radius() const{
+cone::get_radius() const
+{
 	return radius_;
 }
 

@@ -28,17 +28,16 @@
 
 
 
-/*
+
 SUITE(ambient)
 {
     TEST(get_reflectivity)
     {
         material mat;
-        CHECK_EQUAL(0, mat.get_reflectivity());
+        CHECK_EQUAL(1, mat.get_reflectivity());
     }
 }
 
-*/
 
 
 
@@ -56,8 +55,9 @@ public :
     // the following code might also be executed in any method
     // just start your raytracing algorithm from here
 
-    std::cout << "read sdf file" << std::endl;
+
     scene_.load_sdf("materials.sdf");
+    std::cout << "read sdf file" << std::endl;
 
     // get glutwindow instance
     glutwindow& window = glutwindow::instance();
@@ -73,7 +73,7 @@ public :
         // create pixel at x,y
         pixel p(x, y);
 
-        //ray r = scene_.main_camera().calc_eye_ray(x,y);
+//        ray r = scene_.main_camera().calc_eye_ray(x,y);
         //color c = renderer_.raytrace(r);
         // size of a tile in checkerboard
         //p.rgb = c;
@@ -128,9 +128,11 @@ private : // attributes
 
 int main(int argc, char* argv[])
 {
-
     material mat;
     std::cout<<mat<<std::endl;
+
+    shape* dbox = new box ("die box", mat, point3d(1,1,1), point3d(2,2,2));
+    std::cout<<*dbox<<std::endl;
 
     triangle tr;
     std::cout<<tr<<std::endl;
@@ -183,7 +185,7 @@ int main(int argc, char* argv[])
   // wait on thread
   thr.join();
 
-  return 0;
+  return UnitTest::RunAllTests();
 }
 
 

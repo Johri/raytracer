@@ -13,9 +13,7 @@
 class shape;
 
 class ray{
-private:
-	point3d origin_;
-	point3d direction_;
+
 public:
 	ray();
 	ray(point3d const& origin, point3d const& direction);
@@ -25,8 +23,11 @@ public:
 	ray& operator=(ray const& rhs);
 	point3d const& getOrigin()const;
 	point3d const& getDir()const;
-
 	color const& getColor(double t, shape const& s, ray const& r) const;
+
+private:
+	point3d origin_;
+	point3d direction_;
 };
 
 #endif

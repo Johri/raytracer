@@ -7,7 +7,7 @@
 #include "shape.hpp"
 
 ray::ray()
-:origin_(0,0,0), direction_(0,0,0)
+:origin_(0,0,0), direction_(1,1,-1)
 {
 
 }

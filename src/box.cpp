@@ -4,6 +4,7 @@
  */
 
 #include "box.hpp"
+#include "point3d.hpp"
 
 box::box()
 :shape("standardBox", material()),p1_(0,0,0),p2_(1,1,1)
@@ -11,27 +12,25 @@ box::box()
 	std::cout<<"Standardobjekt Box erzeugt"<<"\n"<<std::endl;
 }
 box::box(std::string const& name, material const& mat, point3d const& x, point3d const& y):
-shape(name,mat),
-p1_(x),
-p2_(y)
+shape(name,mat), p1_(x), p2_(y)
 {
-
+    std::cout<<"Box erzeugt"<<"\n"<<std::endl;
 }
 
 box::~box()
 {
-	std::cout<<"Standardobjekt Box gelöscht"<<"\n"<<std::endl;
+	std::cout<<"Box gelöscht"<<"\n"<<std::endl;
 }
 
-point3d
-const& box::getX() const
+point3d const&
+box::getX() const
 {
 	return p1_;
 }
 
 
-point3d
-const& box::getY() const
+point3d const&
+box::getY() const
 {
 	return p2_;
 }
@@ -40,7 +39,7 @@ const& box::getY() const
 bool
 box::is_inside(point3d const& p) const
 {
-	return p2_.getX()<p.getX()<p1_.getX() && p2_.getY()<p.getY()<p1_.getY() && p1_.getZ()<p.getZ()<p2_.getZ();
+	return p.getX()<=p2_.getX() && p.getX()>=p1_.getX() && p.getY()>=p2_.getY() && p.getY()<=p1_.getY() && p.getZ()>=p1_.getZ() && p.getZ()<=p2_.getZ();
 }
 
 
@@ -63,101 +62,320 @@ d_wert(point3d p, point3d p1)
 
 
 double
-unbekannte(point3d p,point3d aufziehpunkt, point3d a, point3d b)
-{     //a und b von der Geradengleichung
-	if(d_wert(p, b) !=0){
-	double unbekannte=d_wert(p, aufziehpunkt) -(d_wert(p,a)/d_wert(p,b));
+unbekannte(point3d p,point3d aufziehpunkt)
+{
+    double unbekannte=d_wert(p, aufziehpunkt);
 	return unbekannte;
-	}else {
-		std::cout<<"Kein Schnittpunkt"<<std::endl;
-		return -1; //immer mit if angeben
-	}
-
 }
 
 
-double
-box::intersect(ray const& r) const
+double min(double a, double c)
+{
+	if (a<c)
+	{
+		return a;
+	}
+	else
+	{
+		return c;
+	}
+}
+
+
+double max(double a, double c)
+{
+	if (a>c)
+	{
+		return a;
+	}
+	else
+	{
+		return c;
+	}
+}
+
+
+double max(double a, double b, double c)
+{
+	double tmp = max(a, b);
+
+	if (tmp > c)
+	{
+		return tmp;
+	}
+	else
+	{
+		return c;
+	}
+}
+
+
+double min(double a, double b, double c)
+{
+	if (min(a,b)<c)
+	{
+		return min(a,b);
+	}
+	else
+	{
+		return c;
+	}
+}
+
+
+/*void box::rotate (double bog_z, double bog_x, double bog_y)
+{
+    double radius=std::sqrt(x_*x_+y_*y_);
+    double phi=asin(y_/ radius);
+    x_=radius*cos(phi+bog);
+    y_=radius*sin(phi+bog);
+}*/
+
+
+double box::intersect(ray const& r) const
 {
 	double t;
-	//Ebenengleichungen aufstellen, normieren (normalenvektor*ortsvektor=d) und in jede die Gerade vom Ray einsetzen
-	//->> nach Unbekannte u auflösen:
+	point3d schnitt1, schnitt2, schnitt3, schnitt4, schnitt5, schnitt6;
 
-	//1.Ebene (vorne):
+	point3d norm_d=normalize(r.getDir());
+
+	//1.Ebene (vorder):
 	point3d p3 ((p2_.getX()-p1_.getX()),0,0);
 	point3d p4 (0, (p2_.getY()-p1_.getY()), 0);
 	point3d n1 = normalenvektor(p3, p4);
-	double u1 = unbekannte(n1,p1_, r.getOrigin(), r.getDir());
-	point3d schnitt1 ((r.getOrigin().getX()+u1*r.getDir().getX()), (r.getOrigin().getY()+u1*r.getDir().getY()), (r.getOrigin().getZ()+u1*r.getDir().getZ()));
+	double u1 = unbekannte(n1,p1_);
 
+	double t1,t2,t3,t4,t5,t6;
 
-	//2.Ebene (rechts):
+	if(scaleproduct(n1, norm_d)!=0)
+	{
+		double temp=(scaleproduct(n1,r.getOrigin())+u1)/scaleproduct(n1, norm_d);
+		schnitt1=r.getOrigin()+temp*norm_d;
+		if (is_inside(schnitt1))
+		{
+			t1=temp;
+		}
+		else
+		{
+			t1=	1.7E+308;
+		}
+
+	}
+	else
+	{
+		t1=-1;
+	}
+	std::cout<<"t1= "<< t1<<std::endl;
+
+	//2.Ebene (links):
 	point3d p5 (0,0,(p2_.getZ()-p1_.getZ()));
-	point3d p6 (0,p1_.getY(),0); //überlegen
-	point3d n2 = normalenvektor(p5, p6);
-	double u2 = unbekannte(n2, p2_, r.getOrigin(), r.getDir());
-	point3d schnitt2 ((r.getOrigin().getX()+u2*r.getDir().getX()), (r.getOrigin().getY()+u2*r.getDir().getY()), (r.getOrigin().getZ()+u2*r.getDir().getZ()));
+	point3d n2 = normalenvektor(p5, p4);
+	double u2 = unbekannte(n2, p1_);
+
+	if(scaleproduct(n2, norm_d)!=0)
+	{
+		double temp=(scaleproduct(n2,r.getOrigin())+u2)/scaleproduct(n2, norm_d);
+		schnitt2=r.getOrigin()+temp*norm_d;
+		if (is_inside(schnitt2))
+		{
+			t2=temp;
+		}
+		else
+		{
+			t2=	1.7E+308;
+		}
+	}
+	else
+	{
+		t2=-1;
+	}
+	std::cout<<"t2= "<< t2<<std::endl;
 
 
-	//3.Ebene (links):
-	point3d p7 (p1_.getX(),p1_.getY(),p2_.getZ());
-	point3d p8 (p1_.getX(),p2_.getY(),p2_.getZ());
-	point3d n3 = normalenvektor(p7, p4);
-	double u3 = unbekannte(n3, p8, r.getOrigin(), r.getDir());
-	point3d schnitt3 ((r.getOrigin().getX()+u3*r.getDir().getX()), (r.getOrigin().getY()+u3*r.getDir().getY()), (r.getOrigin().getZ()+u3*r.getDir().getZ()));
+	//3.Ebene (rechts):
+	point3d n3 = normalenvektor(p5, p4);
+	double u3 = unbekannte(n3, p2_);
 
+	if(scaleproduct(n3, norm_d)!=0)
+	{
+		double temp=(scaleproduct(n3,r.getOrigin())+u3)/scaleproduct(n3, norm_d);
+		schnitt3=r.getOrigin()+temp*norm_d;
+		if (is_inside(schnitt3))
+		{
+			t3=temp;
+		}
+		else
+		{
+			t3=	1.7E+308;
+		}
+	}
+	else
+	{
+		t3=-1;
+	}
+	std::cout<<"t3= "<< t3<<std::endl;
 
 	//4.Ebene (oben):
-	point3d n4 = normalenvektor(p7, p3);
-	double u4 =unbekannte(n4, p1_, r.getOrigin(), r.getDir());
-	point3d schnitt4 ((r.getOrigin().getX()+u4*r.getDir().getX()), (r.getOrigin().getY()+u4*r.getDir().getY()), (r.getOrigin().getZ()+u4*r.getDir().getZ()));
+	point3d n4 = normalenvektor(p3, p5);
+	double u4 =unbekannte(n4, p1_);
+
+	if(scaleproduct(n4, norm_d)!=0)
+	{
+		double temp=(scaleproduct(n4,r.getOrigin())+u4)/scaleproduct(n4, norm_d);
+		schnitt4=r.getOrigin()+temp*norm_d;
+		if (is_inside(schnitt4))
+		{
+			t4=temp;
+		}else
+		{
+			t4=	1.7E+308;
+		}
+	}
+	else
+	{
+		t4=-1;
+	}
+	std::cout<<"t4= "<< t4<<std::endl;
 
 
 	//5.Ebene (unten):
-	point3d n5 =normalenvektor(p5, p8);
-	double u5 = unbekannte(n5, p2_, r.getOrigin(), r.getDir());
-	point3d schnitt5 ((r.getOrigin().getX()+u5*r.getDir().getX()), (r.getOrigin().getY()+u5*r.getDir().getY()), (r.getOrigin().getZ()+u5*r.getDir().getZ()));
+	point3d n5 =normalenvektor(p5, p3);
+	double u5 = unbekannte(n5, p2_);
 
-	//Schnittpunktentfernung prüfen:
-	if (p1_.getX()<=schnitt1.getX()<=p2_.getX() && p2_.getY()<=schnitt1.getY()<=p1_.getY()) {
-		if(p1_.getZ()<=schnitt2.getZ()<=p2_.getZ() && p2_.getY()<=schnitt2.getY()<=p1_.getY()){
-			return t=shape::distance (r.getOrigin(), schnitt1, schnitt2);
-		} else if (p1_.getZ()<=schnitt3.getZ()<=p2_.getZ() && p2_.getY()<=schnitt3.getY()<=p1_.getY()) {
-			return t=shape::distance (r.getOrigin(), schnitt1, schnitt3);
-		} else if (p1_.getX()<=schnitt4.getX()<=p2_.getX() && p1_.getZ()<=schnitt4.getZ()<=p2_.getZ()) {
-			return t=shape::distance (r.getOrigin(), schnitt1, schnitt4);
-		} else if (p1_.getX()<=schnitt5.getX()<=p2_.getX() && p1_.getZ()<=schnitt5.getZ()<=p2_.getZ()) {
-			return t=shape::distance (r.getOrigin(), schnitt1, schnitt5);
-		} else {
-			return t=sqrt((r.getOrigin().getX()-schnitt1.getX())*(r.getOrigin().getX()-schnitt1.getX())+(r.getOrigin().getY()-schnitt1.getY())*(r.getOrigin().getY()-schnitt1.getY())+(r.getOrigin().getZ()-schnitt1.getZ())*(r.getOrigin().getZ()-schnitt1.getZ()));
+	if(scaleproduct(n5, norm_d)!=0)
+	{
+		double temp=(scaleproduct(n5,r.getOrigin())+u5)/scaleproduct(n5, norm_d);
+		schnitt5=r.getOrigin()+temp*norm_d;
+		if (is_inside(schnitt5))
+		{
+			t5=temp;
+		}else
+		{
+			t5=	1.7E+308;
 		}
-	} else 	if (p1_.getZ()<=schnitt2.getZ()<=p2_.getZ() && p2_.getY()<=schnitt2.getY()<=p1_.getY()) {
-		if(p1_.getX()<=schnitt5.getX()<=p2_.getX() && p1_.getZ()<=schnitt5.getZ()<=p2_.getZ()){
-			return t=shape::distance (r.getOrigin(), schnitt2, schnitt5);
-		} else if (p1_.getZ()<=schnitt3.getZ()<=p2_.getZ() && p2_.getY()<=schnitt3.getY()<=p1_.getY()) {
-			return t=shape::distance (r.getOrigin(), schnitt2, schnitt3);
-		} else if (p1_.getX()<=schnitt4.getX()<=p2_.getX() && p1_.getZ()<=schnitt4.getZ()<=p2_.getZ()) {
-			return t=shape::distance (r.getOrigin(), schnitt2, schnitt4);
-		}  else {
-			return t=sqrt((r.getOrigin().getX()-schnitt2.getX())*(r.getOrigin().getX()-schnitt2.getX())+(r.getOrigin().getY()-schnitt2.getY())*(r.getOrigin().getY()-schnitt2.getY())+(r.getOrigin().getZ()-schnitt2.getZ())*(r.getOrigin().getZ()-schnitt2.getZ()));
+	}
+	else
+	{
+		t5=-1;
+	}
+	std::cout<<"t5= "<< t5<<std::endl;
+
+	//6.Ebene (hinten):
+	point3d n6 =normalenvektor(-p4, -p3);
+	double u6 = unbekannte(n6, p2_);
+
+	if(scaleproduct(n6, norm_d)!=0)
+	{
+		double temp=(scaleproduct(n6,r.getOrigin())+u6)/scaleproduct(n6, norm_d);
+		schnitt6=r.getOrigin()+temp*norm_d;
+		if (is_inside(schnitt5))
+		{
+			t6=temp;
 		}
-	} else if (p1_.getZ()<=schnitt3.getZ()<=p2_.getZ() && p2_.getY()<=schnitt3.getY()<=p1_.getY()) {
-		if(p1_.getX()<=schnitt5.getX()<=p2_.getX() && p1_.getZ()<=schnitt5.getZ()<=p2_.getZ()){
-			return t=shape::distance (r.getOrigin(), schnitt3, schnitt5);
-		} else if (p1_.getX()<=schnitt4.getX()<=p2_.getX() && p1_.getZ()<=schnitt4.getZ()<=p2_.getZ()) {
-			return t=shape::distance (r.getOrigin(), schnitt3, schnitt4);
-		} else {
-			return t=sqrt((r.getOrigin().getX()-schnitt3.getX())*(r.getOrigin().getX()-schnitt3.getX())+(r.getOrigin().getY()-schnitt3.getY())*(r.getOrigin().getY()-schnitt3.getY())+(r.getOrigin().getZ()-schnitt3.getZ())*(r.getOrigin().getZ()-schnitt3.getZ()));
+		else
+		{
+			t6=	1.7E+308;
 		}
-	} else if (p1_.getX()<=schnitt4.getX()<=p2_.getX() && p1_.getZ()<=schnitt4.getZ()<=p2_.getZ()) {
-		if(p1_.getX()<=schnitt5.getX()<=p2_.getX() && p1_.getZ()<=schnitt5.getZ()<=p2_.getZ()){
-			return t=shape::distance (r.getOrigin(), schnitt4, schnitt5);
-		}  else {
-			return t=sqrt((r.getOrigin().getX()-schnitt4.getX())*(r.getOrigin().getX()-schnitt4.getX())+(r.getOrigin().getY()-schnitt4.getY())*(r.getOrigin().getY()-schnitt4.getY())+(r.getOrigin().getZ()-schnitt4.getZ())*(r.getOrigin().getZ()-schnitt4.getZ()));
+	}
+	else
+	{
+		t6=-1;
+	}
+	std::cout<<"t6= "<< t6<<std::endl;
+
+	double t_links_rechts_min, t_oben_unten_min, t_links_rechts_max, t_oben_unten_max, t_min, t_max, t_vorne_hinten_min, t_vorne_hinten_max;
+
+	t_links_rechts_min = min(t2,t3);
+
+	if (t_links_rechts_min==t2)
+	{
+		t_links_rechts_max=t3;
+	}
+	else
+	{
+		t_links_rechts_max=t2;
+	}
+
+	t_oben_unten_min= min(t4,t5);
+
+	if (t_oben_unten_min==t4)
+	{
+		t_oben_unten_max=t5;
+	}
+	else
+	{
+		t_oben_unten_max=t4;
+	}
+
+	t_vorne_hinten_min= min(t1,t6);
+
+	if (t_vorne_hinten_min==t1)
+	{
+		t_vorne_hinten_max=t6;
+	}
+	else
+	{
+		t_vorne_hinten_max=t1;
+	}
+
+	t_min=max(t_links_rechts_min,t_oben_unten_min, t_vorne_hinten_min);
+	t_max=min(t_links_rechts_max, t_oben_unten_max, t_vorne_hinten_max);
+
+
+
+	if(t_min<=t_max)
+	{
+
+		double temp=min(t_links_rechts_min, t_oben_unten_min);
+		double max_=max(t_links_rechts_min, t_oben_unten_min);
+
+		if(max_>0)
+		{
+			if (temp>0)
+			{
+				if (t_vorne_hinten_min>0)
+				{
+					t=min(temp,t_vorne_hinten_min);
+				}else
+				{
+					t=temp;
+				}
+			}
+			else if (min(t_vorne_hinten_min, max_)>0)
+			{
+				t=min(t_vorne_hinten_min,max_);
+			}
+			else if (max(t_vorne_hinten_min, max_)>0)
+			{
+				t=max(t_vorne_hinten_min, max_);
+			}
+			else
+			{
+				t=-1;
+			}
+
 		}
-	} else if (p1_.getX()<=schnitt5.getX()<=p2_.getX() && p1_.getZ()<=schnitt5.getZ()<=p2_.getZ()) {
-		return t=sqrt((r.getOrigin().getX()-schnitt5.getX())*(r.getOrigin().getX()-schnitt5.getX())+(r.getOrigin().getY()-schnitt5.getY())*(r.getOrigin().getY()-schnitt5.getY())+(r.getOrigin().getZ()-schnitt5.getZ())*(r.getOrigin().getZ()-schnitt5.getZ()));
-	} else {
+		else if (t_vorne_hinten_min>0)
+		{
+			t=t_vorne_hinten_min;
+		}
+		else
+		{
+			t=-1;
+		}
+
+		if (t < 0)
+		{
+			std::cout << "Schnittpunkt hinter der Kamera!"<<std::endl;
+		}else
+		{
+			std::cout << "Es gibt einen Schnittpunkt mit Abstand "<<t<<std::endl;
+		}
+
+		return t;
+	}
+	else
+	{
 		std::cout<<"Kein Schnittpunkt"<<std::endl;
 		return -1;
 	}

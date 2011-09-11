@@ -11,11 +11,11 @@
 #include "camera.hpp"
 #include "light.hpp"
 #include "material.hpp"
-#include "material_map.hpp"
 #include "box.hpp"
 #include "sphere.hpp"
 #include "triangle.hpp"
 #include "shape.hpp"
+#include "renderer.hpp"
 
 
 
@@ -26,6 +26,7 @@ class scene
         scene(scene const& first_scene);
         ~scene();
 
+        camera const& main_camera() const;
         void load_sdf (std::string const& sdf);
 
     private:
@@ -33,6 +34,7 @@ class scene
     std::list <shape*> shapes_;
     std::list <camera> cameras_;
     std::list <light> lights_;
+    renderer renderer_;
 
 };
 

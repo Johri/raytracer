@@ -15,7 +15,6 @@ public:
 	point3d const& getSecond() const;
 	point3d const& getThird() const;
 
-	bool is_inside(point3d const& point) const;
 	double intersect(ray const& r) const;
 	point3d make_normal(point3d const& p) const;
 

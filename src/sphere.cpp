@@ -42,14 +42,14 @@ const& sphere::getMiddle() const
 double
 sphere::volume() const
 {
-	return radius_*radius_*radius_*4/3*M_PI;
+	return pow(radius_,3)*4/3*M_PI;
 }
 
 
 double
 sphere::surface() const
 {
-	return radius_*radius_*4*M_PI;
+	return pow(radius_,2)*4*M_PI;
 }
 
 
@@ -60,53 +60,51 @@ sphere::is_inside(point3d const& point) const
 }
 
 
-double
-sphere::intersect(ray const& r) const
+double sphere::intersect(ray const& r) const
 {
-	double var0, var1;
+	double dist;
 
-	//Kugelgleichung: (x-m)*(x-m)=r*r
-	//Geradengleichung: x=origin_+var*direction_
-	//Schnittpunkt durch Gleichsetzen:
+	double m;
+	point3d l=center_-r.getOrigin();
 
-//	(origin_.getX()-center_.getX()+var*direction_.getX())*(origin_.getX()-center_.getX()+var*direction_.getX())+
-//	(origin_.getY()-center_.getY()+var*direction_.getY())*(origin_.getY()-center_.getY()+var*direction_.getY())+
-//	(origin_.getZ()-center_.getZ()+var*direction_.getZ())*(origin_.getZ()-center_.getZ()+var*direction_.getZ())=radius_*radius_;
+	point3d dir=r.getDir();
+	point3d d=normalize(dir);
 
-	//Zusammenfassen, um var zu ermitteln:
-	double a=r.getOrigin().getX()-center_.getX();
-	double b=r.getOrigin().getY()-center_.getY();
-	double c=r.getOrigin().getZ()-center_.getZ();
+	std::cout<<"Normierter Richtungsvektor"<<d<<std::endl;
 
-	//Nach Umstellung folgt:
-	double sum=radius_*radius_-a*a-b*b-c*c; //und:
-	double var2=a*r.getDir().getX()+b*r.getDir().getY()+c*r.getDir().getZ();
-	double var3=r.getDir().getX()*r.getDir().getX()+r.getDir().getY()*r.getDir().getY()+r.getDir().getZ()*r.getDir().getZ();
+	//double d_length=length(d); //Länge
+	double s=scaleproduct(l, d);
+	m=scaleproduct(l, l)-s*s;
 
-	//Mitternachtsformel: var*var*var3+var*var2-sum=0 -------->
-	var0=sqrt(var2*var2-4*sum*var3)-var2/(2*var3);
-	var1=-(sqrt(var2*var2-4*sum*var3))-var2/(2*var3);
+	if (m<radius_*radius_)
+	{
+		std::cout<<"Schnittpunkt mit der Kugel"<<std::endl;
+		double q;
+		q=sqrt(radius_*radius_-m);
+		double p1=s-q;
+		//double p2=s+q; //try
 
-	//var in Geradengleichung einsetzen:
-	if(var3!=0){
-		double t1x=r.getOrigin().getX()+var0*r.getDir().getX();
-		double t1y=r.getOrigin().getY()+var0*r.getDir().getY();
-		double t1z=r.getOrigin().getZ()+var0*r.getDir().getZ();
-		point3d schnitt1 (t1x,t1y,t1z);
+			//point3d schnitt1=r.getOrigin()+p1*d;
+			//point3d schnitt2=r.getOrigin()+p2*d;
+			//dist=distance(r.getOrigin(),schnitt1,schnitt2);
+			dist = p1;
+			return dist;
 
-		double t2x=r.getOrigin().getX()+var1*r.getDir().getX();
-		double t2y=r.getOrigin().getY()+var1*r.getDir().getY();
-		double t2z=r.getOrigin().getZ()+var1*r.getDir().getZ();
-		point3d schnitt2 (t2x,t2y,t2z);
-		// diese Punkte sollten immer positiv sein, sonst ist ein schwarzer Punkt zu sehen.
+	}
+	else if (m==radius_*radius_)
+	{
+			std::cout<<"Schnittpunkt=Berührungspunkt"<<std::endl;
+			//point3d schnitt1=r.getOrigin()+s*d;
+			//dist=sqrt((r.getOrigin().getX()-schnitt1.getX())*(r.getOrigin().getX()-schnitt1.getX())+(r.getOrigin().getY()-schnitt1.getY())*(r.getOrigin().getY()-schnitt1.getY())+(r.getOrigin().getZ()-schnitt1.getZ())*(r.getOrigin().getZ()-schnitt1.getZ()));
+			return dist=s;
 
-	//Abstand zwischen Strahlursprung und den Schnittpunkten berechnen:
-		shape::distance(r.getOrigin(), schnitt1, schnitt2);
 	}
 	else
 	{
-		std::cout << "var3 = 0 und somit kein Schnittpkt."<<std::endl;
+		std::cout<<"Kein Schnittpunkt mit der Kugel"<<std::endl;
+		return -1;
 	}
+
 }
 
 

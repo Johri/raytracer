@@ -21,7 +21,7 @@ shape::shape(std::string const& name, material const& mat)
 
 shape::~shape()
 {
-	std::cout<<"Objekt Shape gelöscht"<<"\n"<<std::endl;
+	std::cout<<"Shape gelöscht"<<"\n"<<std::endl;
 }
 
 
@@ -61,7 +61,7 @@ shape::distance (point3d origin, point3d a, point3d b) const
 void
 shape::print_on(std::ostream& str) const
 {
-	str <<"SHAPE"<<"\n"<<"   Name:"<< name_<<std::endl;
+	str <<"SHAPE"<<"\n"<<"   Name: "<< name_<<std::endl;
 	str << material_ <<std::flush;
 }
 

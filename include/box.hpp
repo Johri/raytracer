@@ -20,6 +20,7 @@ class box: public shape
         point3d const& getY() const;
         bool is_inside(point3d const& p) const;
         double intersect(ray const& r) const;
+        void rotate (double bog);
         point3d make_normal(point3d const& p) const;
 
         void print_on(std::ostream& str) const;

@@ -17,7 +17,7 @@ triangle::triangle(std::string const& name, material const& mat, point3d const& 
 
 triangle::~triangle()
 {
-	std::cout<<"Objekt Triangle gelöscht"<<"\n"<<std::endl;
+	std::cout<<"Triangle gelöscht"<<"\n"<<std::endl;
 }
 
 point3d
@@ -38,62 +38,70 @@ const& triangle::getThird() const
 	return third_;
 }
 
-bool
-triangle::is_inside(point3d const& point) const
-{
-	// c=s*a+t*b --->nach s und t ausflösen
-	point3d a= second_-first_;
-	point3d b= third_-first_;
-	point3d c= point-first_;
-
-	double t=(c.getY()-(a.getY()/a.getX())*c.getX())/(b.getY()-(a.getY()/a.getX())*b.getX());
-	double s= (c.getX()-t*b.getX())/a.getX();
-
-	double st=s+t;
-
-	if (0<s<1 && 0<t<1 && 0<st<1)
-        {
-            return true;
-        }
-
-	else
-        {
-            return false;
-        }
-}
-
 
 double
 triangle::intersect(ray const& r) const
 {
+    double d;
+
+	point3d a= second_-first_;
+	point3d b= third_-first_;
+	point3d c= r.getOrigin()-first_;
+
+	double s;
 	double t;
-	point3d second = second_-first_;
-	point3d third = third_-first_;
+	double l;
+	double bruch;
 
-	double a=second.getY()*third.getZ()-second.getZ()*third.getY();
-	double b=second.getZ()*third.getX()-second.getX()*third.getZ();
-	double c=second.getX()*third.getY()-second.getY()*third.getX();
+	point3d richtungsvektor=r.getDir();
+	point3d dir=normalize(richtungsvektor);
 
-	point3d normalenvektor(a,b,c);
+	std::cout<<"richtungsvektor"<<r.getDir().getX()<<std::endl;
+	std::cout<<"richtungsvektor"<<r.getDir().getY()<<std::endl;
+	std::cout<<"richtungsvektor"<<r.getDir().getZ()<<std::endl;
 
-	double d = a*first_.getX()+b*first_.getY()+c*first_.getZ();
+	std::cout<<"normalisierter richtungsvektor"<<dir.getX()<<std::endl;
+	std::cout<<"normalisierter richtungsvektor"<<dir.getY()<<std::endl;
+	std::cout<<"normalisierter richtungsvektor"<<dir.getZ()<<std::endl;
 
-	if(a*third_.getX()+b*third_.getY()+c*third_.getZ() !=0)
-        {
-            double unbekannte = d -(a*second_.getX()+b*second_.getY()+c*second_.getZ()/a*third_.getX()+b*third_.getY()+c*third_.getZ());
-            point3d schnitt1 ((r.getOrigin().getX()+unbekannte*r.getDir().getX()), (r.getOrigin().getY()+unbekannte*r.getDir().getY()), (r.getOrigin().getZ()+unbekannte*r.getDir().getZ()));
-            if (is_inside(schnitt1))
-            {
-                t=sqrt((r.getOrigin().getX()-schnitt1.getX())*(r.getOrigin().getX()-schnitt1.getX())+(r.getOrigin().getY()-schnitt1.getY())*(r.getOrigin().getY()-schnitt1.getY())+(r.getOrigin().getZ()-schnitt1.getZ())*(r.getOrigin().getZ()-schnitt1.getZ()));
-                return t;
-            }
-        }
+	point3d cross1=crossproduct(c, a);
+	point3d cross2=crossproduct(dir, b);
 
-    else
-        {
-        std::cout<<"Kein Schnittpunkt"<<std::endl;
-        return -1;
-        }
+	double scale=scaleproduct(cross2, a);
+
+	bruch=1/scale;
+
+	//s=bruch*(scaleproduct(crossproduct(-dir, b),c));
+	//t=bruch*(scaleproduct(crossproduct(c, a),-dir));
+	//l=bruch*(scaleproduct(crossproduct(c,a),b));
+
+	l=bruch*scaleproduct(cross1, b);
+	s=bruch*scaleproduct(cross2, c);
+	t=bruch*scaleproduct(cross1, dir);
+
+	double st=s+t;
+
+	std::cout<<"cross="<<cross2.getX()<<std::endl;
+	std::cout<<"cross="<<cross2.getY()<<std::endl;
+	std::cout<<"cross="<<cross2.getZ()<<std::endl;
+	std::cout<<"scale="<<scale<<std::endl;
+	std::cout<<"s="<<s<<std::endl;
+	std::cout<<"t="<<t<<std::endl;
+
+	if (s>=0 && s<1 && t>=0 && t<1 && st>0 && st<1)
+	{
+		std::cout<<"Schnittpunkt mit Dreieck"<<std::endl;
+		//in Geradengleichung l einsetzen:
+		point3d schnitt=r.getOrigin()+l*dir;
+		//Entfernung Origin-Schnitt berechnen:
+		d=sqrt((r.getOrigin().getX()-schnitt.getX())*(r.getOrigin().getX()-schnitt.getX())+(r.getOrigin().getY()-schnitt.getY())*(r.getOrigin().getY()-schnitt.getY())+(r.getOrigin().getZ()-schnitt.getZ())*(r.getOrigin().getZ()-schnitt.getZ()));
+		return d;
+	}
+	else
+	{
+		std::cout<<"Kein Schnittpunkt mit Dreieck"<<std::endl;
+		return -1;
+	}
 }
 
 
