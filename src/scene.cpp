@@ -12,7 +12,11 @@ scene::scene()
 
 scene::~scene()
 {
-    shapes_.clear();
+    for(std::list<shape*>::iterator i=shapes_.begin(); i!=shapes_.end(); ++i)
+    {
+        delete *i;
+    }
+
     std::cout<<std::endl;
     std::cerr << "Error: shapes not deleted"<<"\n"<< std::endl;
     //dtor
