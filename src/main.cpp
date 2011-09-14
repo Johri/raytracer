@@ -85,7 +85,7 @@ public :
     // just start your raytracing algorithm from here
 
 
-    scene_.load_sdf("betongball.sdf");
+    scene_.load_sdf("material.sdf");
     renderer_.set_scene(scene_);
     //std::cout << "read sdf file" << std::endl;
 
@@ -160,6 +160,13 @@ private : // attributes
 
 int main(int argc, char* argv[])
 {
+
+    point3d origin (0,0,0);
+    point3d direction (2,2,0);
+    ray r (origin, direction);
+    std::cout<<"Richtungsvektortest: "<<r.getDir()<<std::endl;
+
+
     /*material mat;
     std::cout<<mat<<std::endl;
 

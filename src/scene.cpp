@@ -5,7 +5,7 @@
 
 
 scene::scene()
-:materials_(), shapes_(), cameras_(), lights_()
+:materials_(), shapes_(), camera_(), lights_()
 {
     //ctor
 }
@@ -26,7 +26,7 @@ camera
 scene::main_camera() const
 {
 
-    return cameras_;
+    return camera_;
 }
 
 
@@ -283,11 +283,15 @@ scene::load_sdf(std::string const& sdf)
                                     ss>>y;
                                     double z;
                                     ss>>z;
+                                    int pixel_x;
+                                    ss>>pixel_x;
+                                    int pixel_y;
+                                    ss>>pixel_y;
                                     double fov;
                                     ss>>fov;
-                                    std::cout<<x<<" "<<y<<" "<<z<<" "<<fov<<std::endl;
-                                    camera c (name, point3d(x,y,z), 500, 500, fov);
-                                    cameras_=c;
+                                    std::cout<<x<<" "<<y<<" "<<z<<" "<<pixel_x<<" "<<pixel_y<<" "<<fov<<std::endl;
+                                    camera c (name, point3d(x,y,z), pixel_x, pixel_y, fov);
+                                    camera_=c;
                                 }
                             }
                         }
@@ -321,7 +325,7 @@ scene::load_sdf(std::string const& sdf)
     }
     std::cout<<"\n"<<"\n"<<std::endl;
 
-    /*for(std::map<std::string, material>::iterator i=materials_.begin(); i!=materials_.end(); ++i)
+    for(std::map<std::string, material>::iterator i=materials_.begin(); i!=materials_.end(); ++i)
     {
         std::cout<<i->first<<" "<<i->second<<std::endl;
     }
@@ -336,10 +340,8 @@ scene::load_sdf(std::string const& sdf)
         std::cout<<*i<<std::endl;
     }
 
-    for(std::list<camera>::iterator i=cameras_.begin(); i!=cameras_.end(); ++i)
-    {
-        std::cout<<*i<<std::endl;
-    }*/
+    std::cout<<camera_<<std::endl;
+
 
     }
     fs.close();

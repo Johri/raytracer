@@ -8,20 +8,20 @@
 shape::shape()
 :name_("Standard Shape"), material_(material())
 {
-	std::cout<<"Standardobjekt Shape erzeugt"<<"\n"<<std::endl;
+	//std::cout<<"Standardobjekt Shape erzeugt"<<"\n"<<std::endl;
 }
 
 
 shape::shape(std::string const& name, material const& mat)
 :name_(name), material_(mat)
 {
-	std::cout<<"Shape erzeugt"<<"\n"<<std::endl;
+	//std::cout<<"Shape erzeugt"<<"\n"<<std::endl;
 }
 
 
 shape::~shape()
 {
-	std::cout<<"Shape gelöscht"<<"\n"<<std::endl;
+	//std::cout<<"Shape gelöscht"<<"\n"<<std::endl;
 }
 
 

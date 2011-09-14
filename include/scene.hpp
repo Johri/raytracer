@@ -30,7 +30,7 @@ class scene
     std::map<std::string, material> materials_;
     std::list <shape*> shapes_;
     //std::list <camera> cameras_;
-    camera cameras_;
+    camera camera_;
     std::list <light> lights_;
     //renderbefehl... render_ anlegen?
     std::string img_name_;

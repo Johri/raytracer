@@ -3,19 +3,19 @@
 material::material()
 :name_("stdmaterial"), ambient_(0.1,0.1,0.1), defuse_(1,1,1), specular_(1,1,1), reflectivity_(1)
 {
-	std::cout<<"Standard Material erzeugt"<<"\n"<<std::endl;
+	//std::cout<<"Standard Material erzeugt"<<"\n"<<std::endl;
 }
 
 material::material (std::string const& name, color const& ambient, color const& defuse, color const& specular, float reflectivity)
 :name_(name), ambient_(ambient), defuse_(defuse), specular_(specular), reflectivity_(reflectivity)
 {
-	std::cout<<"Material erzeugt"<<"\n"<<std::endl;
+	//std::cout<<"Material erzeugt"<<"\n"<<std::endl;
 }
 
 material::material(material const& copy)
 :name_(copy.name_), ambient_(copy.ambient_), defuse_(copy.defuse_), specular_(copy.specular_), reflectivity_(copy.reflectivity_)
 {
-	std::cout<<"Material gelöscht"<<"\n"<<std::endl;
+	//std::cout<<"Material gelöscht"<<"\n"<<std::endl;
 }
 
 material::~material()

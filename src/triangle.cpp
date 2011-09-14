@@ -92,6 +92,7 @@ triangle::intersect(ray const& r) const
 
 	if (s>=0 && s<1 && t>=0 && t<1 && st>0 && st<1)
 	{
+	    //std::cout<<"Schnittpunkt mit Dreieck"<<std::endl;
 		//std::cout<<"Schnittpunkt mit Dreieck"<<std::endl;
 		//in Geradengleichung l einsetzen:
 		point3d schnitt=r.getOrigin()+l*dir;
