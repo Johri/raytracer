@@ -5,10 +5,11 @@
 
 
 scene::scene()
-: materials_(), shapes_(), cameras_(), lights_(), renderer_()
+:materials_(), shapes_(), cameras_(), lights_()
 {
     //ctor
 }
+
 
 scene::~scene()
 {
@@ -17,24 +18,22 @@ scene::~scene()
         delete *i;
     }
 
-    std::cout<<std::endl;
-    std::cerr << "Error: shapes not deleted"<<"\n"<< std::endl;
     //dtor
 }
 
 
-camera const&
+camera
 scene::main_camera() const
 {
-    camera cam;
-    return cam;
+
+    return cameras_;
 }
 
 
 void
 scene::load_sdf(std::string const& sdf)
 {
-     std::ifstream fs("material.sdf"/*sdf.c_str()*/);
+     std::ifstream fs(sdf.c_str());
 
     if (fs.is_open())
     {
@@ -278,12 +277,17 @@ scene::load_sdf(std::string const& sdf)
                                 {
                                     ss>>name;
                                     std::cout<<def<<" "<<type<<" "<<name<<" ";
+                                    double x;
+                                    ss>>x;
+                                    double y;
+                                    ss>>y;
+                                    double z;
+                                    ss>>z;
                                     double fov;
                                     ss>>fov;
-                                    std::cout<<fov<<std::endl;
-                                    camera c (name, point3d(0,0,0), fov);
-                                    cameras_.push_back(c);
-
+                                    std::cout<<x<<" "<<y<<" "<<z<<" "<<fov<<std::endl;
+                                    camera c (name, point3d(x,y,z), 500, 500, fov);
+                                    cameras_=c;
                                 }
                             }
                         }
@@ -304,14 +308,20 @@ scene::load_sdf(std::string const& sdf)
                         int res_y;
                         ss>>res_y;
                         std::cout<<res_x<<" "<<res_y<<std::endl;
-                        renderer r(name,wtr,res_x,res_y);
+                        img_name_=name;
+                        img_cam_=wtr;
+                        img_res_x_=res_x;
+                        img_res_y_=res_y;
+                        // camera.set_width(res_x)
+                        // camera.set_height(res_y)
                     }
                 }
             }
             ss.clear();
     }
     std::cout<<"\n"<<"\n"<<std::endl;
-    for(std::map<std::string, material>::iterator i=materials_.begin(); i!=materials_.end(); ++i)
+
+    /*for(std::map<std::string, material>::iterator i=materials_.begin(); i!=materials_.end(); ++i)
     {
         std::cout<<i->first<<" "<<i->second<<std::endl;
     }
@@ -329,9 +339,7 @@ scene::load_sdf(std::string const& sdf)
     for(std::list<camera>::iterator i=cameras_.begin(); i!=cameras_.end(); ++i)
     {
         std::cout<<*i<<std::endl;
-    }
-
-
+    }*/
 
     }
     fs.close();

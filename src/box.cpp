@@ -165,7 +165,7 @@ double box::intersect(ray const& r) const
 	{
 		t1=-1;
 	}
-	std::cout<<"t1= "<< t1<<std::endl;
+	//std::cout<<"t1= "<< t1<<std::endl;
 
 	//2.Ebene (links):
 	point3d p5 (0,0,(p2_.getZ()-p1_.getZ()));
@@ -189,7 +189,7 @@ double box::intersect(ray const& r) const
 	{
 		t2=-1;
 	}
-	std::cout<<"t2= "<< t2<<std::endl;
+	//std::cout<<"t2= "<< t2<<std::endl;
 
 
 	//3.Ebene (rechts):
@@ -213,7 +213,7 @@ double box::intersect(ray const& r) const
 	{
 		t3=-1;
 	}
-	std::cout<<"t3= "<< t3<<std::endl;
+	//std::cout<<"t3= "<< t3<<std::endl;
 
 	//4.Ebene (oben):
 	point3d n4 = normalenvektor(p3, p5);
@@ -235,7 +235,7 @@ double box::intersect(ray const& r) const
 	{
 		t4=-1;
 	}
-	std::cout<<"t4= "<< t4<<std::endl;
+	//std::cout<<"t4= "<< t4<<std::endl;
 
 
 	//5.Ebene (unten):
@@ -258,7 +258,7 @@ double box::intersect(ray const& r) const
 	{
 		t5=-1;
 	}
-	std::cout<<"t5= "<< t5<<std::endl;
+	//std::cout<<"t5= "<< t5<<std::endl;
 
 	//6.Ebene (hinten):
 	point3d n6 =normalenvektor(-p4, -p3);
@@ -281,7 +281,7 @@ double box::intersect(ray const& r) const
 	{
 		t6=-1;
 	}
-	std::cout<<"t6= "<< t6<<std::endl;
+	//std::cout<<"t6= "<< t6<<std::endl;
 
 	double t_links_rechts_min, t_oben_unten_min, t_links_rechts_max, t_oben_unten_max, t_min, t_max, t_vorne_hinten_min, t_vorne_hinten_max;
 
@@ -366,17 +366,17 @@ double box::intersect(ray const& r) const
 
 		if (t < 0)
 		{
-			std::cout << "Schnittpunkt hinter der Kamera!"<<std::endl;
+			//std::cout << "Schnittpunkt hinter der Kamera!"<<std::endl;
 		}else
 		{
-			std::cout << "Es gibt einen Schnittpunkt mit Abstand "<<t<<std::endl;
+			//std::cout << "Es gibt einen Schnittpunkt mit Abstand "<<t<<std::endl;
 		}
 
 		return t;
 	}
 	else
 	{
-		std::cout<<"Kein Schnittpunkt"<<std::endl;
+		//std::cout<<"Kein Schnittpunkt"<<std::endl;
 		return -1;
 	}
 
@@ -395,5 +395,5 @@ box::print_on(std::ostream& str) const
 {
     str<<"*BOX*"<<std::endl;
 	shape::print_on(str);
-	str<<"BOX"<<"\n"<<"   Punkt 1: " << p1_<<"   Punkt 2: "<<p2_<<std::endl;
+	str<<"BOX"<<"\n"<<"   Punkt 1: " << p1_<<"   Punkt 2: "<<p2_<<std::flush;
 }

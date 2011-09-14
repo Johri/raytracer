@@ -25,9 +25,13 @@ public:
 	point3d const& getDir()const;
 	color const& getColor(double t, shape const& s, ray const& r) const;
 
+	void print_on(std::ostream& str) const;
+
 private:
 	point3d origin_;
 	point3d direction_;
 };
+
+    std::ostream& operator <<(std::ostream& str, ray const& r);
 
 #endif

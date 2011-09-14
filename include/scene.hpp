@@ -15,7 +15,6 @@
 #include "sphere.hpp"
 #include "triangle.hpp"
 #include "shape.hpp"
-#include "renderer.hpp"
 
 
 
@@ -23,18 +22,21 @@ class scene
 {
     public:
         scene();
-        scene(scene const& first_scene);
         ~scene();
 
-        camera const& main_camera() const;
+        camera main_camera() const;
         void load_sdf (std::string const& sdf);
 
-    private:
     std::map<std::string, material> materials_;
     std::list <shape*> shapes_;
-    std::list <camera> cameras_;
+    //std::list <camera> cameras_;
+    camera cameras_;
     std::list <light> lights_;
-    renderer renderer_;
+    //renderbefehl... render_ anlegen?
+    std::string img_name_;
+    std::string img_cam_;
+    unsigned int img_res_x_;
+    unsigned int img_res_y_;
 
 };
 

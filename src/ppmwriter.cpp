@@ -33,7 +33,7 @@ ppmwriter::~ppmwriter()
 ////////////////////////////////////////////////////////////////////////////////
 void ppmwriter::write(pixel const& p)
 {
-  size_t buf_pos = width_* (width_-1-p.y) + p.x;
+  size_t buf_pos = width_* (height_-1-p.y) + p.x;
   std::size_t pos = (sizeof(color)/sizeof(color::value_t)) * buf_pos;
   if (pos + ((sizeof(color)/sizeof(color::value_t)) - 1) > data_.size() || (int)buf_pos < 0) {
     std::cerr << "Fatal Error ppmwriter::write(pixel p) : Critical write position\n";

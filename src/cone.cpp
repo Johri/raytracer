@@ -60,5 +60,5 @@ cone::print_on(std::ostream& str) const
 {
     str<<"*CONE*"<<std::endl;
 	shape::print_on(str);
-	str<<"CONE"<<"\n"<<"   Mittelpunkt: "<<center_<< "   Radius: " << radius_<<"\n"<<"   Höhe: "<<higth_<<"\n"<<std::endl;
+	str<<"CONE"<<"\n"<<"   Mittelpunkt: "<<center_<< "   Radius: " << radius_<<"\n"<<"   Höhe: "<<higth_<<std::endl;
 }

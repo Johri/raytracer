@@ -68,7 +68,7 @@ double scaleproduct(point3d const& p1, point3d const& p2){
 }
 
 double length(point3d const& p){
-	double d=sqrt((p.getX()*p.getX()+p.getY()*p.getY()+p.getZ()*p.getZ()));
+	double d=sqrt(p.getX()*p.getX()+p.getY()*p.getY()+p.getZ()*p.getZ());
 	return d;
 }
 

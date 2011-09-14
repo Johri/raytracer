@@ -72,3 +72,17 @@ ray::getColor(double t, shape const& s, ray const& r) const
 }
 
 
+void
+ray::print_on(std::ostream& str) const
+{
+	str <<"RAY"<<"\n"<<"   Origin: "<< origin_<<"   Direction: "<<direction_<<std::flush;
+}
+
+
+std::ostream& operator <<(std::ostream& str, ray const& r)
+{
+	r.print_on(str);
+	return str;
+}
+
+

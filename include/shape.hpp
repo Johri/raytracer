@@ -9,6 +9,7 @@
 #include "point3d.hpp"
 #include "material.hpp"
 #include "ray.hpp"
+#include "matrix.hpp"
 #include <iostream>
 #include <string>
 #include <ostream>
@@ -32,6 +33,7 @@ class shape
     private:
         std::string name_;
         material material_;
+        math3d::matrix world_transformation_inv;
 };
 
     std::ostream& operator << (std::ostream& str, shape const& s);

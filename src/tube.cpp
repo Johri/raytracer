@@ -67,5 +67,5 @@ tube::print_on(std::ostream& str) const
 {
     str<<"*TUBE*"<<std::endl;
 	shape::print_on(str);
-	str<<"TUBE"<<"\n"<<"   Mittelpunkt: "<<center_<< "   Radius: " << radius_<<"\n"<<"   Höhe: "<<higth_<<"\n"<<std::endl;
+	str<<"TUBE"<<"\n"<<"   Mittelpunkt: "<<center_<< "   Radius: " << radius_<<"\n"<<"   Höhe: "<<higth_<<std::endl;
 }

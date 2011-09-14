@@ -6,17 +6,13 @@
 #include "sphere.hpp"
 
 sphere::sphere():
-shape("standard Sphere", material()),
-radius_(1),
-center_(0,0,0)
+shape("standard Sphere", material()), radius_(1), center_(0,0,0)
 {
 	std::cout<<"Standardobjekt Sphere erzeugt"<<"\n"<<std::endl;
 }
 
 sphere::sphere(std::string const& name, material const& mat, double r, point3d const& p):
-shape(name,mat),
-radius_(r),
-center_(p)
+shape(name,mat), radius_(r), center_(p)
 {
 	std::cout<<"Sphere erzeugt"<<"\n"<<std::endl;
 }
@@ -70,7 +66,7 @@ double sphere::intersect(ray const& r) const
 	point3d dir=r.getDir();
 	point3d d=normalize(dir);
 
-	std::cout<<"Normierter Richtungsvektor"<<d<<std::endl;
+	//std::cout<<"Normierter Richtungsvektor"<<d<<std::endl;
 
 	//double d_length=length(d); //Länge
 	double s=scaleproduct(l, d);
@@ -78,7 +74,7 @@ double sphere::intersect(ray const& r) const
 
 	if (m<radius_*radius_)
 	{
-		std::cout<<"Schnittpunkt mit der Kugel"<<std::endl;
+		//std::cout<<"Schnittpunkt mit der Kugel"<<std::endl;
 		double q;
 		q=sqrt(radius_*radius_-m);
 		double p1=s-q;
@@ -93,7 +89,7 @@ double sphere::intersect(ray const& r) const
 	}
 	else if (m==radius_*radius_)
 	{
-			std::cout<<"Schnittpunkt=Berührungspunkt"<<std::endl;
+			//std::cout<<"Schnittpunkt=Berührungspunkt"<<std::endl;
 			//point3d schnitt1=r.getOrigin()+s*d;
 			//dist=sqrt((r.getOrigin().getX()-schnitt1.getX())*(r.getOrigin().getX()-schnitt1.getX())+(r.getOrigin().getY()-schnitt1.getY())*(r.getOrigin().getY()-schnitt1.getY())+(r.getOrigin().getZ()-schnitt1.getZ())*(r.getOrigin().getZ()-schnitt1.getZ()));
 			return dist=s;
@@ -101,7 +97,7 @@ double sphere::intersect(ray const& r) const
 	}
 	else
 	{
-		std::cout<<"Kein Schnittpunkt mit der Kugel"<<std::endl;
+		//std::cout<<"Kein Schnittpunkt mit der Kugel"<<std::endl;
 		return -1;
 	}
 

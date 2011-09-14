@@ -56,13 +56,14 @@ triangle::intersect(ray const& r) const
 	point3d richtungsvektor=r.getDir();
 	point3d dir=normalize(richtungsvektor);
 
-	std::cout<<"richtungsvektor"<<r.getDir().getX()<<std::endl;
+	/*std::cout<<"richtungsvektor"<<r.getDir().getX()<<std::endl;
 	std::cout<<"richtungsvektor"<<r.getDir().getY()<<std::endl;
 	std::cout<<"richtungsvektor"<<r.getDir().getZ()<<std::endl;
 
 	std::cout<<"normalisierter richtungsvektor"<<dir.getX()<<std::endl;
 	std::cout<<"normalisierter richtungsvektor"<<dir.getY()<<std::endl;
 	std::cout<<"normalisierter richtungsvektor"<<dir.getZ()<<std::endl;
+    */
 
 	point3d cross1=crossproduct(c, a);
 	point3d cross2=crossproduct(dir, b);
@@ -81,16 +82,17 @@ triangle::intersect(ray const& r) const
 
 	double st=s+t;
 
-	std::cout<<"cross="<<cross2.getX()<<std::endl;
+	/*std::cout<<"cross="<<cross2.getX()<<std::endl;
 	std::cout<<"cross="<<cross2.getY()<<std::endl;
 	std::cout<<"cross="<<cross2.getZ()<<std::endl;
 	std::cout<<"scale="<<scale<<std::endl;
 	std::cout<<"s="<<s<<std::endl;
 	std::cout<<"t="<<t<<std::endl;
+    */
 
 	if (s>=0 && s<1 && t>=0 && t<1 && st>0 && st<1)
 	{
-		std::cout<<"Schnittpunkt mit Dreieck"<<std::endl;
+		//std::cout<<"Schnittpunkt mit Dreieck"<<std::endl;
 		//in Geradengleichung l einsetzen:
 		point3d schnitt=r.getOrigin()+l*dir;
 		//Entfernung Origin-Schnitt berechnen:
@@ -99,7 +101,7 @@ triangle::intersect(ray const& r) const
 	}
 	else
 	{
-		std::cout<<"Kein Schnittpunkt mit Dreieck"<<std::endl;
+		//std::cout<<"Kein Schnittpunkt mit Dreieck"<<std::endl;
 		return -1;
 	}
 }
@@ -117,6 +119,6 @@ void triangle::print_on(std::ostream& str) const
 {
     str <<"*TRIANGLE*"<<std::endl;
     shape::print_on(str);
-    str <<"TRIANGLE"<<"\n"<<"   first: "<< first_<<"   second: "<<second_<<"   third: "<<third_<<std::endl;
+    str <<"TRIANGLE"<<"\n"<<"   first: "<< first_<<"   second: "<<second_<<"   third: "<<third_<<std::flush;
 
 }

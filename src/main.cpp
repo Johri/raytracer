@@ -1,7 +1,7 @@
 #include <glutwindow.hpp>
 #include <ppmwriter.hpp>
 #include <pixel.hpp>
-#include <unittest++/UnitTest++.h>
+//#include <unittest++/UnitTest++.h>
 
 #include <iostream>
 #include <cmath>
@@ -19,6 +19,8 @@
 #include "scene.hpp"
 #include "tube.hpp"
 #include "cone.hpp"
+#include "color.hpp"
+#include "renderer.hpp"
 
 #ifdef __APPLE__
   #include <GLUT/glut.h>
@@ -26,17 +28,44 @@
   #include <GL/glut.h>
 #endif
 
+/*for (std::size_t y = 0; y < window.height(); ++y)
+{
+	for (std::size_t x = 0; x < window.width(); ++x)
+	{
+        // create pixel at x,y
+        pixel p(x, y);
+
+        example_math3d();
+
+        // compute color for pixel
+        if ( ((x/checkersize)%2) != ((y/checkersize)%2)) {
+	        p.rgb = color(0.0, 1.0, float(x)/window.height());
+        } else {
+			p.rgb = color(1.0, 0.0, float(y)/window.width());
+        }
+
+        // write pixel to output window
+        window.write(p);
+
+        // write pixel to image writer
+        image.write(p);
+	}
+}
 
 
+// save final image
+    image.save();
+  }*/
 
-SUITE(ambient)
+
+/*SUITE(ambient)
 {
     TEST(get_reflectivity)
     {
         material mat;
         CHECK_EQUAL(1, mat.get_reflectivity());
     }
-}
+}*/
 
 
 
@@ -56,8 +85,9 @@ public :
     // just start your raytracing algorithm from here
 
 
-    scene_.load_sdf("materials.sdf");
-    std::cout << "read sdf file" << std::endl;
+    scene_.load_sdf("betongball.sdf");
+    renderer_.set_scene(scene_);
+    //std::cout << "read sdf file" << std::endl;
 
     // get glutwindow instance
     glutwindow& window = glutwindow::instance();
@@ -73,10 +103,12 @@ public :
         // create pixel at x,y
         pixel p(x, y);
 
-//        ray r = scene_.main_camera().calc_eye_ray(x,y);
-        //color c = renderer_.raytrace(r);
+        ray r = scene_.main_camera().calc_eye_ray(x,y);
+
+
+        color c = renderer_.raytrace(r);
         // size of a tile in checkerboard
-        //p.rgb = c;
+        p.rgb = c;
 
         // write pixel to output window
         window.write(p);
@@ -119,7 +151,7 @@ private : // attributes
 
   // you may add your scene description here
   scene scene_;
-  //renderer renderer_;
+  renderer renderer_;
 };
 
 
@@ -128,7 +160,7 @@ private : // attributes
 
 int main(int argc, char* argv[])
 {
-    material mat;
+    /*material mat;
     std::cout<<mat<<std::endl;
 
     shape* dbox = new box ("die box", mat, point3d(1,1,1), point3d(2,2,2));
@@ -156,10 +188,8 @@ int main(int argc, char* argv[])
     std::cout<<tuba<<std::endl;
 
     ray r;
-    kugel.intersect(r);
+    kugel.intersect(r);*/
 
-    scene die_scene;
-    //die_scene.load_sdf("material.sdf");
 
 
 
@@ -185,7 +215,7 @@ int main(int argc, char* argv[])
   // wait on thread
   thr.join();
 
-  return UnitTest::RunAllTests();
+  return 0;//UnitTest::RunAllTests();
 }
 
 

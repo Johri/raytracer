@@ -1,14 +1,17 @@
 #include "camera.hpp"
 #include "ray.hpp"
+#include "point3d.hpp"
+#include <cmath>
+#include <iostream>
 
 camera::camera()
-:name_("stdandart camera"), location_(0,0,0), fov_x_(45)
+:name_("stdandart camera"), location_(0,0,0), width_(500), heigth_(500), fov_x_(45), d_(get_d())
 {
-    //ctor
+
 }
 
-camera::camera(std::string name, point3d const& loc, double fov)
-:name_(name), location_(0,0,0), fov_x_(45)
+camera::camera(std::string name, point3d const& loc, double w, double h, double fov)
+:name_(name), location_(loc), width_(w), heigth_(h), fov_x_(45), d_(get_d())
 {
     //ctor
 }
@@ -20,19 +23,29 @@ camera::~camera()
 
 
 
-ray const&
-calc_eye_ray(unsigned int x, unsigned int y)
+double
+camera::get_d()
 {
-    ray r;
-    return r;
+    d_=-1/(tan(fov_x_/2));
 }
 
+
+ray
+camera::calc_eye_ray(double x,double y) const
+{
+    double x_=(x/width_*2)-1;
+    double y_=(heigth_/width_)*(y/heigth_*2)-1;
+    point3d p (x_,y_,d_);
+    normalize (p);
+    ray r (point3d(0,0,0), p);
+    return r;
+}
 
 
 void
 camera::print_on(std::ostream& str) const
 {
-	str <<"CAMERA"<<"\n"<<"   Name: "<< name_<<"\n"<<"   Location: "<<location_<<"   Field of View: "<<fov_x_<<"\n"<<std::flush;
+	str <<"CAMERA"<<"\n"<<"   Name: "<< name_<<"\n"<<"   Location: "<<location_<<"   Field of View: "<<fov_x_<<"\n"<<"   d: "<<d_<<"\n"<<std::flush;
 }
 
 
