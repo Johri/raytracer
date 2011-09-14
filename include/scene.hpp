@@ -15,6 +15,7 @@
 #include "sphere.hpp"
 #include "triangle.hpp"
 #include "shape.hpp"
+#include "tube.hpp"
 
 
 

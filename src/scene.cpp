@@ -1,6 +1,14 @@
 
 
 #include "scene.hpp"
+#include "camera.hpp"
+#include "light.hpp"
+#include "material.hpp"
+#include "box.hpp"
+#include "sphere.hpp"
+#include "triangle.hpp"
+#include "shape.hpp"
+#include "tube.hpp"
 
 
 
@@ -231,6 +239,39 @@ scene::load_sdf(std::string const& sdf)
                                         shape* t = new triangle (name, materials_[mat_name], point3d(x1, y1, z1), point3d(x2, y2, z2), point3d(x3, y3, z3));
                                         shapes_.push_back(t);
                                     }
+                                    else
+                                    {
+                                        if(geo=="tube")
+                                        {
+                                            ss>>name;
+                                            std::cout<<def<<" "<<type<<" "<<geo<<" "<<name<<" ";
+                                            double x1;
+                                            ss>>x1;
+                                            std::cout<<x1<<" ";
+                                            double y1;
+                                            ss>>y1;
+                                            std::cout<<y1<<" ";
+                                            double z1;
+                                            ss>>z1;
+                                            std::cout<<z1<<" ";
+                                            double x2;
+                                            ss>>x2;
+                                            std::cout<<x2<<" ";
+                                            double y2;
+                                            ss>>y2;
+                                            std::cout<<y2<<" ";
+                                            double z2;
+                                            ss>>z2;
+                                            std::cout<<z2<<" ";
+                                            double r;
+                                            ss>>r;
+                                            std::cout<<r<<" ";
+                                            ss>>mat_name;
+                                            std::cout<<mat_name<<std::endl;
+                                            shape* tu = new tube (name, materials_[mat_name], point3d(x1, y1, z1), point3d(x2, y2, z2), r);
+                                            shapes_.push_back(tu);
+                                        }
+                                    }
                                 }
                             }
 
@@ -250,22 +291,22 @@ scene::load_sdf(std::string const& sdf)
                                 double z;
                                 ss>>z;
                                 std::cout<<z<<" ";
-                                float Lar;
+                                double Lar;
                                 ss>>Lar;
                                 std::cout<<Lar<<" ";
-                                float Lag;
+                                double Lag;
                                 ss>>Lag;
                                 std::cout<<Lag<<" ";
-                                float Lab;
+                                double Lab;
                                 ss>>Lab;
                                 std::cout<<Lab<<" ";
-                                float Ldr;
+                                double Ldr;
                                 ss>>Ldr;
                                 std::cout<<Ldr<<" ";
-                                float Ldg;
+                                double Ldg;
                                 ss>>Ldg;
                                 std::cout<<Ldg<<" ";
-                                float Ldb;
+                                double Ldb;
                                 ss>>Ldb;
                                 std::cout<<Ldb<<std::endl;
                                 light l (name, point3d(x,y,z), color(Lar,Lag,Lab), color(Ldr,Ldg,Ldb));
