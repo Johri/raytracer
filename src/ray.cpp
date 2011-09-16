@@ -72,6 +72,14 @@ ray::getColor(double t, shape const& s, ray const& r) const
 }
 
 
+point3d
+ray::getSchnitt(double t) const
+{
+	point3d p=origin_+t*normalize(direction_-origin_);
+	return p;
+}
+
+
 void
 ray::print_on(std::ostream& str) const
 {

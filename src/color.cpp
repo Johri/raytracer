@@ -99,12 +99,22 @@ color::operator+=(color const& a)
 
 ////////////////////////////////////////////////////////////////////////////////
 color
-color::operator*(color const& a)
+color::operator*=(color const& a)
 {
   data_[0]*=a.data_[0];
   data_[1]*=a.data_[1];
   data_[2]*=a.data_[2];
   return *this;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+color
+operator*(color const& a, color const& b)
+{
+  color result(a);
+  result *= b;
+  return result;
 }
 
 
