@@ -108,8 +108,8 @@ tube::intersect(ray const& r) const
         {
             if (schnitt2.getY()<bottom_center_.getY() || schnitt2.getY()>top_center_.getY())
             {
-                t=-1;
                 std::cout<<"Gerade liegt über dem Zylinder"<<std::endl;
+                t=-1;
             }
             else
             {
@@ -121,8 +121,8 @@ tube::intersect(ray const& r) const
         {
             if (schnitt1.getY()<bottom_center_.getY() || schnitt1.getY()>top_center_.getY())
             {
-                t=-1;
                 std::cout<<"Gerade liegt über dem Zylinder"<<std::endl;
+                t=-1;
             }
             else
             {

@@ -13,6 +13,9 @@ class light //Punktlichtquelle
         light(std::string const& name, point3d const& loc, color const& amb, color const& def);
         ~light();
 
+        point3d const& get_location()const;
+        color const& get_ambient()const;
+        color const& get_defuse()const;
         void translate (double x, double y, double z);
         void rotate ();
 

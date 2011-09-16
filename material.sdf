@@ -1,11 +1,11 @@
 # materials
-define material red 1 0 0 1 0 0 1 1 1 1
+define material red 1 0.1 0.1 1 0.001 0.001 1 1 1 1
 define material blue 0 0 1 0 0 1 1 1 1 1
 define material green 0 1 0 0 1 0 1 1 1 1
 define material yellow 1 1 0 1 1 0 1 1 1 1
 define material bright_yellow 1 1 0.6 1 1 0 1 1 1 1
 define material white 1 1 1 1 1 1 1 1 1 1
-define material grey 0.8 0.8 0.8 0.9 0.9 0.9 0.9 0.9 0.9 1
+define material grey 0.8 0.8 0.8 0.8 0.8 0.8 0.3 0.3 0.3 1
 
 # geometry
 define shape sphere ball         -5 0 -20       5                       grey
@@ -15,14 +15,16 @@ define shape triangle dreieck    -3 3 -18   -1 8.5 -21   0 8 -21        grey
 define shape triangle dreieck    -0 7 -21.5   -1 8.5 -21   0 8 -21      grey
 define shape triangle dreieck1   -4 3 -18   -4.5 9.5 -21   -3.5 9 -21   grey
 define shape triangle dreieck1   -3 8 -21.5   -4.5 9.5 -21   -3.5 9 -21 grey
-define shape triangle dreieck2   14 -5 -100   34 30 -100   34 -5 -100   blue
-define shape triangle dreieck3   14 -5 -100   34 30 -100   14 30 -100   blue
+define shape triangle  tür1       14 -5 -100   34 30 -100   34 -5 -100   blue
+define shape triangle  tür2       14 -5 -100   34 30 -100   14 30 -100   blue
 define shape triangle dreieck4   14 -5 -100   34 -5 -100   -6 -5 -20    white
 define shape triangle dreieck5   -6 -5 -20    34 -5 -100   3.5 -5 -13   white
-#define shape     tube zylinder    4 -2 -30      4  2  -30   3             red
+#define shape tube     zylinder    4 -2 -30     8 -2  -30   5            red
+#define shape circle   kreis       0 0 -20      0 6 -20     6 0 -20      red
+#define shape box      kiste       4 4 -20      0 0 -24                   red
 
 # light - from right above
-define light sun 1000 700 0 0.4 0.5 0.1 0.7 0.8 0.6
+define light sun 0 10 -25 0.5 0.1 0 1 0.7 0.2
 define light lamp -5 30 -6 0.3 0.3 0.3 0.4 0.4 0.4
 
 # camera

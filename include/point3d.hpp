@@ -37,7 +37,9 @@ bool operator==(point3d const& lhs, point3d const& rhs);
 point3d crossproduct(point3d const& p1, point3d const& p2);
 double scaleproduct(point3d const& p1, point3d const& p2);
 point3d normalize(point3d const& p);
+point3d normalenvektor(point3d p1,point3d p2);
 double length(point3d const& p);
+double length_two_points(point3d const& p, point3d const& q);
 
 std::ostream& operator<<(std::ostream& str, point3d const& p);
 

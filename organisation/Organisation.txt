@@ -13,6 +13,8 @@ Die anderen Objekte bis jetzt nur mit positiven Werten.
 
 6.Seite zu box.cpp hinzugefügt.
 
+Das Attribut Höhe aus der Zylinder-Klasse gelöscht, da nicht brauchbar.
+
 Martin:
 Hab einige Klassen von dir übernommen und erweitert, weil wir mit unterschiedlichen datein arbeiten... und wir schnell den überblick verlieren könnten.
 Alle print_on funktionen funktionieren.

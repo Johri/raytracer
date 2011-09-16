@@ -21,6 +21,28 @@ light::~light()
 }
 
 
+
+point3d const&
+light::get_location() const
+{
+    return location_;
+}
+
+
+color const&
+light::get_ambient() const
+{
+    return ambient_;
+}
+
+
+color const&
+light::get_defuse() const
+{
+    return defuse_;
+}
+
+
 void
 light::rotate()
 {

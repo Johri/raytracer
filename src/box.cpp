@@ -53,18 +53,12 @@ normalenvektor(point3d p1,point3d p2)
 	return normalenvektor;
 }
 
-double
-d_wert(point3d p, point3d p1)
-{
-	double d= p.getX()*p1.getX()+p.getY()*p1.getY()+p.getZ()*p1.getZ();
-	return d;
-}
-
 
 double
 unbekannte(point3d p,point3d aufziehpunkt)
 {
-    double unbekannte=d_wert(p, aufziehpunkt);
+     //identisch zu scaleproduct
+	double unbekannte=p.getX()*aufziehpunkt.getX()+p.getY()*aufziehpunkt.getY()+p.getZ()*aufziehpunkt.getZ();
 	return unbekannte;
 }
 
@@ -153,6 +147,7 @@ double box::intersect(ray const& r) const
 		schnitt1=r.getOrigin()+temp*norm_d;
 		if (is_inside(schnitt1))
 		{
+		    std::cout<<"temp1"<<temp<<std::endl;
 			t1=temp;
 		}
 		else
@@ -167,7 +162,7 @@ double box::intersect(ray const& r) const
 	}
 	//std::cout<<"t1= "<< t1<<std::endl;
 
-	//2.Ebene (links):
+	//2.Ebene (rechts):
 	point3d p5 (0,0,(p2_.getZ()-p1_.getZ()));
 	point3d n2 = normalenvektor(p5, p4);
 	double u2 = unbekannte(n2, p1_);
@@ -178,6 +173,7 @@ double box::intersect(ray const& r) const
 		schnitt2=r.getOrigin()+temp*norm_d;
 		if (is_inside(schnitt2))
 		{
+		    std::cout<<"temp2"<<temp<<std::endl;
 			t2=temp;
 		}
 		else
@@ -192,8 +188,8 @@ double box::intersect(ray const& r) const
 	//std::cout<<"t2= "<< t2<<std::endl;
 
 
-	//3.Ebene (rechts):
-	point3d n3 = normalenvektor(p5, p4);
+	//3.Ebene (links):
+	point3d n3 = normalenvektor(-p5, -p4);
 	double u3 = unbekannte(n3, p2_);
 
 	if(scaleproduct(n3, norm_d)!=0)
@@ -202,6 +198,7 @@ double box::intersect(ray const& r) const
 		schnitt3=r.getOrigin()+temp*norm_d;
 		if (is_inside(schnitt3))
 		{
+		    std::cout<<"temp3"<<temp<<std::endl;
 			t3=temp;
 		}
 		else
@@ -225,8 +222,10 @@ double box::intersect(ray const& r) const
 		schnitt4=r.getOrigin()+temp*norm_d;
 		if (is_inside(schnitt4))
 		{
+		    std::cout<<"temp4"<<temp<<std::endl;
 			t4=temp;
-		}else
+		}
+		else
 		{
 			t4=	1.7E+308;
 		}
@@ -239,7 +238,7 @@ double box::intersect(ray const& r) const
 
 
 	//5.Ebene (unten):
-	point3d n5 =normalenvektor(p5, p3);
+	point3d n5 =normalenvektor(-p5, -p3);
 	double u5 = unbekannte(n5, p2_);
 
 	if(scaleproduct(n5, norm_d)!=0)
@@ -248,8 +247,10 @@ double box::intersect(ray const& r) const
 		schnitt5=r.getOrigin()+temp*norm_d;
 		if (is_inside(schnitt5))
 		{
+		    std::cout<<"temp5"<<temp<<std::endl;
 			t5=temp;
-		}else
+		}
+		else
 		{
 			t5=	1.7E+308;
 		}
@@ -270,6 +271,7 @@ double box::intersect(ray const& r) const
 		schnitt6=r.getOrigin()+temp*norm_d;
 		if (is_inside(schnitt5))
 		{
+		    std::cout<<"temp6"<<temp<<std::endl;
 			t6=temp;
 		}
 		else
@@ -323,7 +325,7 @@ double box::intersect(ray const& r) const
 
 
 
-	if(t_min<=t_max)
+	if(t_min>=t_max)
 	{
 
 		double temp=min(t_links_rechts_min, t_oben_unten_min);
@@ -336,16 +338,19 @@ double box::intersect(ray const& r) const
 				if (t_vorne_hinten_min>0)
 				{
 					t=min(temp,t_vorne_hinten_min);
-				}else
+				}
+				else
 				{
 					t=temp;
 				}
 			}
-			else if (min(t_vorne_hinten_min, max_)>0)
+			else
+			if (min(t_vorne_hinten_min, max_)>0)
 			{
 				t=min(t_vorne_hinten_min,max_);
 			}
-			else if (max(t_vorne_hinten_min, max_)>0)
+			else
+			if (max(t_vorne_hinten_min, max_)>0)
 			{
 				t=max(t_vorne_hinten_min, max_);
 			}
@@ -355,7 +360,8 @@ double box::intersect(ray const& r) const
 			}
 
 		}
-		else if (t_vorne_hinten_min>0)
+		else
+		if (t_vorne_hinten_min>0)
 		{
 			t=t_vorne_hinten_min;
 		}
@@ -367,7 +373,8 @@ double box::intersect(ray const& r) const
 		if (t < 0)
 		{
 			//std::cout << "Schnittpunkt hinter der Kamera!"<<std::endl;
-		}else
+		}
+		else
 		{
 			//std::cout << "Es gibt einen Schnittpunkt mit Abstand "<<t<<std::endl;
 		}
@@ -376,7 +383,7 @@ double box::intersect(ray const& r) const
 	}
 	else
 	{
-		//std::cout<<"Kein Schnittpunkt"<<std::endl;
+		std::cout<<"Kein Schnittpunkt"<<std::endl;
 		return -1;
 	}
 

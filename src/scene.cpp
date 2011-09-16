@@ -9,6 +9,7 @@
 #include "triangle.hpp"
 #include "shape.hpp"
 #include "tube.hpp"
+#include "circle.hpp"
 
 
 
@@ -270,6 +271,45 @@ scene::load_sdf(std::string const& sdf)
                                             std::cout<<mat_name<<std::endl;
                                             shape* tu = new tube (name, materials_[mat_name], point3d(x1, y1, z1), point3d(x2, y2, z2), r);
                                             shapes_.push_back(tu);
+                                        }
+                                        else
+                                        {
+                                            if(geo=="circle")
+                                            {
+                                                ss>>name;
+                                                std::cout<<def<<" "<<type<<" "<<geo<<" "<<name<<" ";
+                                                double x1;
+                                                ss>>x1;
+                                                std::cout<<x1<<" ";
+                                                double y1;
+                                                ss>>y1;
+                                                std::cout<<y1<<" ";
+                                                double z1;
+                                                ss>>z1;
+                                                std::cout<<z1<<" ";
+                                                double x2;
+                                                ss>>x2;
+                                                std::cout<<x2<<" ";
+                                                double y2;
+                                                ss>>y2;
+                                                std::cout<<y2<<" ";
+                                                double z2;
+                                                ss>>z2;
+                                                std::cout<<z2<<" ";
+                                                double x3;
+                                                ss>>x3;
+                                                std::cout<<x3<<" ";
+                                                double y3;
+                                                ss>>y3;
+                                                std::cout<<y3<<" ";
+                                                double z3;
+                                                ss>>z3;
+                                                std::cout<<z3<<" ";
+                                                ss>>mat_name;
+                                                std::cout<<mat_name<<std::endl;
+                                                shape* c = new circle (name, materials_[mat_name], point3d(x1, y1, z1), point3d(x2, y2, z2), point3d(x3, y3, z3));
+                                                shapes_.push_back(c);
+                                            }
                                         }
                                     }
                                 }

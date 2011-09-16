@@ -59,7 +59,9 @@ point3d::getZ() const
 }
 
 
-double scaleproduct(point3d const& p1, point3d const& p2){
+double
+scaleproduct(point3d const& p1, point3d const& p2)
+{
 	double x=p1.getX()*p2.getX();
 	double y=p1.getY()*p2.getY();
 	double z=p1.getZ()*p2.getZ();
@@ -67,12 +69,25 @@ double scaleproduct(point3d const& p1, point3d const& p2){
 	return p;
 }
 
-double length(point3d const& p){
+double
+length(point3d const& p)
+{
 	double d=sqrt(p.getX()*p.getX()+p.getY()*p.getY()+p.getZ()*p.getZ());
 	return d;
 }
 
-point3d normalize(point3d const& p){
+
+double
+length_two_points(point3d const& p, point3d const& q)
+{
+	double d=sqrt((p.getX()-q.getX())*(p.getX()-q.getX())+(p.getY()-q.getY())*(p.getY()-q.getY())+(p.getZ()-q.getZ())*(p.getZ()-q.getZ()));
+	return d;
+}
+
+
+point3d
+normalize(point3d const& p)
+{
 	double d=length(p);
 	double a=p.getX()/d;
 	double b=p.getY()/d;
@@ -82,7 +97,9 @@ point3d normalize(point3d const& p){
 }
 
 
-point3d crossproduct(point3d const& p1, point3d const& p2){
+point3d
+normalenvektor(point3d const& p1,point3d const& p2)
+{
 	double a=p1.getY()*p2.getZ()-p1.getZ()*p2.getY();
 	double b=p1.getZ()*p2.getX()-p1.getX()*p2.getZ();
 	double c=p1.getX()*p2.getY()-p1.getY()*p2.getX();
@@ -91,7 +108,19 @@ point3d crossproduct(point3d const& p1, point3d const& p2){
 }
 
 
-void point3d::translate (double x, double y, double z)
+point3d
+crossproduct(point3d const& p1, point3d const& p2)
+{
+	double a=p1.getY()*p2.getZ()-p1.getZ()*p2.getY();
+	double b=p1.getZ()*p2.getX()-p1.getX()*p2.getZ();
+	double c=p1.getX()*p2.getY()-p1.getY()*p2.getX();
+	point3d normalenvektor(a,b,c);
+	return normalenvektor;
+}
+
+
+void
+point3d::translate (double x, double y, double z)
 {
     x_+=x;
     y_+=y;
@@ -99,7 +128,8 @@ void point3d::translate (double x, double y, double z)
 }
 
 
-void point3d::teleport (point3d const& destination)
+void
+point3d::teleport (point3d const& destination)
 {
     x_=destination.getX();
     y_=destination.getY();

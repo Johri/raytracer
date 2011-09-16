@@ -9,11 +9,11 @@ class color {
 public : // enums, typedefs
 
   typedef float value_t;
- 
+
 public : // c'tor
   color   ();
   color   ( color const& );
-  color   ( value_t r, value_t g, value_t b ); 
+  color   ( value_t r, value_t g, value_t b );
 
   ~color  ();
 
@@ -26,6 +26,8 @@ public : // methods
 
   color&          operator=   ( const color& );
   void            operator+=  ( const color& );
+
+  color           operator*   ( const color& );
 
 
 private: // members
