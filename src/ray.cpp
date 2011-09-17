@@ -43,10 +43,10 @@ ray::getOrigin()const
 }
 
 
-point3d const&
+point3d
 ray::getDir()const
 {
-	point3d dir=direction_-origin_;
+	point3d dir=direction_;//-origin_;
 	return dir;
 }
 
@@ -56,7 +56,7 @@ ray::getDir()const
 
 }*/
 
-color const&
+color
 ray::getColor(double t, shape const& s, ray const& r) const
 {
  color black(0,0,0);

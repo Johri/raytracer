@@ -23,9 +23,9 @@ class circle:public shape
         void print_on(std::ostream& str) const;
 
     private:
+        point3d center_;
         point3d p1_;
         point3d p2_;
-        point3d center_;
         double radius_;
 };
 

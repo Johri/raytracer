@@ -27,6 +27,7 @@ double
 camera::get_d()
 {
     d_=-1/(tan(fov_x_/2));
+    return d_;
 }
 
 
@@ -36,7 +37,7 @@ camera::calc_eye_ray(double x,double y) const
     double x_=(x/width_*2)-1;
     double y_=(heigth_/width_)*(y/heigth_*2)-(heigth_/width_);
     point3d p (x_,y_,d_);
-    normalize (p);
+    //normalize (p);
     ray r (point3d(0,0,0), p);
     return r;
 }

@@ -20,8 +20,8 @@ define shape triangle  tür2       14 -5 -100   34 30 -100   14 30 -100   blue
 define shape triangle dreieck4   14 -5 -100   34 -5 -100   -6 -5 -20    white
 define shape triangle dreieck5   -6 -5 -20    34 -5 -100   3.5 -5 -13   white
 #define shape tube     zylinder    4 -2 -30     8 -2  -30   5            red
-#define shape circle   kreis       0 0 -20      0 20 -20     6 0 -20      red
-#define shape box      kiste       4 4 -20      0 0 -24                   red
+define shape circle   kreis       0 20 -110      0 40 -110     6 20 -110   red
+define shape box      kiste       4 4 -20      0 0 -24                   red
 
 # light - from right above
 define light sun 0 10 -25 0.5 0.1 0 1 0.7 0.2

@@ -73,10 +73,10 @@ circle::intersect(ray const& r) const
 	{
 		double temp=(scaleproduct(n, r.getOrigin())+s)/scaleproduct(n, dir);
 		point3d schnitt=r.getOrigin()+temp*dir;
-		std::cout<<"schnitt: "<<schnitt<<std::endl;
+		//std::cout<<"schnitt: "<<schnitt<<std::endl;
         if (is_inside(schnitt))
 		{
-		    std::cout<<t<<"\n"<<"Schnittpunkt mit dem Kreis"<<std::endl;
+		    //std::cout<<"Schnittpunkt mit dem Kreis"<<std::endl;
 			return t=temp;
 		}
 		else
@@ -88,7 +88,7 @@ circle::intersect(ray const& r) const
 	}
 	else
 	{
-	    std::cout<<"Kein Schnittpunkt mit Kreisebene"<<std::endl;
+	    //std::cout<<"Kein Schnittpunkt mit Kreisebene"<<std::endl;
 		return t=-1;
 	}
 }

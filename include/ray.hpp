@@ -22,8 +22,8 @@ public:
 
 	ray& operator=(ray const& rhs);
 	point3d const& getOrigin()const;
-	point3d const& getDir()const;
-	color const& getColor(double t, shape const& s, ray const& r) const;
+	point3d getDir()const;
+	color getColor(double t, shape const& s, ray const& r) const;
 	point3d getSchnitt(double t) const;
 
 	void print_on(std::ostream& str) const;

@@ -147,11 +147,16 @@ operator==(point3d const& lhs, point3d const& rhs)
 double&
 point3d::operator [](int wert)
 {
-	if (wert==0) {
+	if (wert==0)
+	{
 		return x_;
-	}else if (wert==1) {
+	}
+	else if (wert==1)
+	{
 		return y_;
-	}else if (wert==2) {
+	}
+	else if (wert==2)
+	{
 		return z_;
 	}
 }

@@ -21,6 +21,7 @@
 #include "cone.hpp"
 #include "color.hpp"
 #include "renderer.hpp"
+#include "circle.hpp"
 
 #ifdef __APPLE__
   #include <GLUT/glut.h>
@@ -123,7 +124,7 @@ public :
   }
 
   // this method shows how to use the supplied classes for matrix, point and vector
-  void example_math3d()
+  /*void example_math3d()
   {
     // create some geometric objects
     math3d::point origin;
@@ -145,7 +146,7 @@ public :
     // concatenate transformations and transform points or vectors
     math3d::vector tv0 = rotate * scale * v0;
     math3d::point  tp0 = rotate * scale * p0;
-  }
+  }*/
 
 private : // attributes
 
@@ -160,14 +161,31 @@ private : // attributes
 
 int main(int argc, char* argv[])
 {
-
+    /*point3d a(0,0,-20);
+    point3d b(0,6,-20);
+    point3d c(6,0,-20);
+    material m;
     point3d origin (0,0,0);
-    point3d direction (2,2,0);
+    point3d direction (-0.2,-0.1,-1);
+    circle circ ("name",m,a,b,c);
     ray r (origin, direction);
-    std::cout<<"Richtungsvektortest: "<<r.getDir()<<std::endl;
+    double t=circ.intersect(r);
+    std::cout<<"Abstand sollte 20,4939 sein."<<t<<std::endl;
 
 
-    /*material mat;
+    point3d p1 (4,4,-20);
+    point3d p2 (0,0,-24);
+    material mat;
+    box bo("box",m,p1,p2);
+    point3d origin2 (3,2,0);
+    point3d dir2 (3,2,-1);
+    ray l(origin2, dir2);
+    double d=bo.intersect(r);
+    std::cout<<"Abstand sollte 20 sein."<<d<<std::endl;
+
+
+
+    material mat;
     std::cout<<mat<<std::endl;
 
     shape* dbox = new box ("die box", mat, point3d(1,1,1), point3d(2,2,2));

@@ -25,7 +25,7 @@ renderer::~renderer()
 
 
 
-color const&
+color
 renderer::shade(shape const& shap, ray const& r)
 {
     light l (scene_.lights_.front());

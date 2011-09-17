@@ -14,7 +14,7 @@ class renderer
         renderer(scene const& s);
         ~renderer();
 
-        color const& shade(shape const& mat, ray const& r);
+        color shade(shape const& mat, ray const& r);
         void set_scene(scene const& s);
         color raytrace(ray const& r);
 
