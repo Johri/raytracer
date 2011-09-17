@@ -111,7 +111,11 @@ triangle::intersect(ray const& r) const
 point3d
 triangle::make_normal(point3d const& p) const
 {
+    point3d p1= second_-first_;
+	point3d p2= third_-first_;
 
+	point3d normale=normalenvektor(p1, p2);
+	return normalize(normale);
 }
 
 

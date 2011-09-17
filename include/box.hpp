@@ -21,7 +21,7 @@ class box: public shape
         bool is_inside(point3d const& p) const;
         double intersect(ray const& r) const;
         void rotate (double bog);
-        point3d make_normal(point3d const& p) const;
+        point3d make_normal(point3d const& schnittpunkt) const;
 
         void print_on(std::ostream& str) const;
 

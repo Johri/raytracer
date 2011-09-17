@@ -96,7 +96,10 @@ circle::intersect(ray const& r) const
 point3d
 circle::make_normal(point3d const& p) const
 {
-
+    point3d v1=p1_-center_;
+	point3d v2=p2_-center_;
+	point3d normale=normalenvektor(v1, v2);
+	return normalize(normale);
 }
 
 

@@ -391,8 +391,49 @@ double box::intersect(ray const& r) const
 
 
 point3d
-box::make_normal(point3d const& p) const
+box::make_normal(point3d const& schnittpunkt) const
 {
+
+	//1.Ebene (vorder):
+	point3d p3 ((p2_.getX()-p1_.getX()),0,0);
+	point3d p4 (0, (p2_.getY()-p1_.getY()), 0);
+	point3d n1 = normalenvektor(p3, p4);
+	double u1 = unbekannte(n1,p1_);
+
+	//2.Ebene (rechts):
+	point3d p5 (0,0,(p2_.getZ()-p1_.getZ()));
+	point3d n2 = normalenvektor(p5, p4);
+	double u2 = unbekannte(n2, p1_);
+
+	//3.Ebene (links):
+	point3d n3 = normalenvektor(-p5, -p4);
+	double u3 = unbekannte(n3, p2_);
+
+	//4.Ebene (oben):
+	point3d n4 = normalenvektor(p3, p5);
+	double u4 =unbekannte(n4, p1_);
+
+	//5.Ebene (unten):
+	point3d n5 =normalenvektor(-p5, -p3);
+	double u5 = unbekannte(n5, p2_);
+
+	//6.Ebene (hinten):
+	point3d n6 =normalenvektor(-p4, -p3);
+	double u6 = unbekannte(n6, p2_);
+
+	if (scaleproduct(n1, schnittpunkt)==u1) {
+		return n1;
+	}else if (scaleproduct(n2, schnittpunkt)==u2) {
+		return n2;
+	}else if (scaleproduct(n3, schnittpunkt)==u3) {
+		return n3;
+	}else if (scaleproduct(n4, schnittpunkt)==u4) {
+		return n4;
+	}else if (scaleproduct(n5, schnittpunkt)==u5) {
+		return n5;
+	}else {
+		return n6;
+	}
 
 }
 
