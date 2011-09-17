@@ -160,8 +160,8 @@ private : // attributes
 
 
 int main(int argc, char* argv[])
-{
-    /*point3d a(0,0,-20);
+{   /*
+    point3d a(0,0,-20);
     point3d b(0,6,-20);
     point3d c(6,0,-20);
     material m;
@@ -176,11 +176,11 @@ int main(int argc, char* argv[])
     point3d p1 (4,4,-20);
     point3d p2 (0,0,-24);
     material mat;
-    box bo("box",m,p1,p2);
+    box bo("box",mat,p1,p2);
     point3d origin2 (3,2,0);
     point3d dir2 (3,2,-1);
     ray l(origin2, dir2);
-    double d=bo.intersect(r);
+    double d=bo.intersect(l);
     std::cout<<"Abstand sollte 20 sein."<<d<<std::endl;
 
 

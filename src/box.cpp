@@ -39,7 +39,7 @@ box::getY() const
 bool
 box::is_inside(point3d const& p) const
 {
-	return p.getX()<=p2_.getX() && p.getX()>=p1_.getX() && p.getY()>=p2_.getY() && p.getY()<=p1_.getY() && p.getZ()>=p1_.getZ() && p.getZ()<=p2_.getZ();
+	return p.getX()<=p1_.getX() && p.getX()>=p2_.getX() && p.getY()>=p2_.getY() && p.getY()<=p1_.getY() && p.getZ()>=p2_.getZ() && p.getZ()<=p1_.getZ();
 }
 
 
@@ -147,7 +147,7 @@ double box::intersect(ray const& r) const
 		schnitt1=r.getOrigin()+temp*norm_d;
 		if (is_inside(schnitt1))
 		{
-		    std::cout<<"temp1"<<temp<<std::endl;
+		    //std::cout<<"temp1"<<temp<<std::endl;
 			t1=temp;
 		}
 		else
@@ -173,7 +173,7 @@ double box::intersect(ray const& r) const
 		schnitt2=r.getOrigin()+temp*norm_d;
 		if (is_inside(schnitt2))
 		{
-		    std::cout<<"temp2"<<temp<<std::endl;
+		    //std::cout<<"temp2"<<temp<<std::endl;
 			t2=temp;
 		}
 		else
@@ -198,7 +198,7 @@ double box::intersect(ray const& r) const
 		schnitt3=r.getOrigin()+temp*norm_d;
 		if (is_inside(schnitt3))
 		{
-		    std::cout<<"temp3"<<temp<<std::endl;
+		    //std::cout<<"temp3"<<temp<<std::endl;
 			t3=temp;
 		}
 		else
@@ -222,7 +222,7 @@ double box::intersect(ray const& r) const
 		schnitt4=r.getOrigin()+temp*norm_d;
 		if (is_inside(schnitt4))
 		{
-		    std::cout<<"temp4"<<temp<<std::endl;
+		    //std::cout<<"temp4"<<temp<<std::endl;
 			t4=temp;
 		}
 		else
@@ -247,7 +247,7 @@ double box::intersect(ray const& r) const
 		schnitt5=r.getOrigin()+temp*norm_d;
 		if (is_inside(schnitt5))
 		{
-		    std::cout<<"temp5"<<temp<<std::endl;
+		    //std::cout<<"temp5"<<temp<<std::endl;
 			t5=temp;
 		}
 		else
@@ -271,7 +271,7 @@ double box::intersect(ray const& r) const
 		schnitt6=r.getOrigin()+temp*norm_d;
 		if (is_inside(schnitt5))
 		{
-		    std::cout<<"temp6"<<temp<<std::endl;
+		    //std::cout<<"temp6"<<temp<<std::endl;
 			t6=temp;
 		}
 		else
@@ -383,7 +383,7 @@ double box::intersect(ray const& r) const
 	}
 	else
 	{
-		std::cout<<"Kein Schnittpunkt"<<std::endl;
+		//std::cout<<"Kein Schnittpunkt"<<std::endl;
 		return -1;
 	}
 

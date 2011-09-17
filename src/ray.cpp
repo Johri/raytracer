@@ -46,7 +46,7 @@ ray::getOrigin()const
 point3d
 ray::getDir()const
 {
-	point3d dir=direction_;//-origin_;
+	point3d dir=direction_-origin_;
 	return dir;
 }
 

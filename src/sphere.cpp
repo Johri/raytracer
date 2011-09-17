@@ -111,7 +111,7 @@ sphere::make_normal(point3d const& p) const
 	double b=(p.getY()-center_.getY())/radius_;
 	double c=(p.getZ()-center_.getZ())/radius_;
 	point3d norm(a,b,c);
-	return norm;
+	return normalize(norm);
 }
 
 
