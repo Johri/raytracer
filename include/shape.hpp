@@ -15,6 +15,8 @@
 #include <ostream>
 #include <cmath>
 
+using namespace math3d;
+
 class shape
 {
     public:

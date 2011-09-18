@@ -10,6 +10,7 @@
 #include "point3d.hpp"
 #include "color.hpp"
 
+
 class shape;
 
 class ray{

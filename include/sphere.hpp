@@ -9,6 +9,8 @@
 #include <iostream>
 #include <cmath>
 
+using namespace math3d;
+
 class sphere :public shape {
 
 public:

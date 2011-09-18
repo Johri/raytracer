@@ -8,6 +8,8 @@
 #include <iostream>
 #include "shape.hpp"
 
+using namespace math3d;
+
 class box: public shape
 {
 

@@ -4,6 +4,8 @@
 #include "point3d.hpp"
 #include "shape.hpp"
 
+using namespace math3d;
+
 class circle:public shape
 {
     public:

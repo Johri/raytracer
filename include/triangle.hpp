@@ -4,6 +4,8 @@
 #include "shape.hpp"
 #include "point3d.hpp"
 
+using namespace math3d;
+
 class triangle: public shape
 {
 

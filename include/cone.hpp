@@ -10,6 +10,8 @@
 #include <cmath>
 #include <string>
 
+using namespace math3d;
+
 class cone:public shape
 {
 

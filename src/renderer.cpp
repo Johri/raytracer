@@ -1,6 +1,5 @@
 #include "renderer.hpp"
 #include "scene.hpp"
-#include "shape.hpp"
 #include "color.hpp"
 #include "material.hpp"
 
@@ -21,6 +20,26 @@ renderer::renderer(scene const& s)
 renderer::~renderer()
 {
     //dtor
+}
+
+
+
+bool
+renderer::delta(shape const& shap, ray const& r, light const& l)
+{
+
+    point3d ra (r.getSchnitt(shap.intersect(r)));
+    ray rl(l.get_location(), ra);
+
+    for(std::list<shape*>::iterator i=scene_.shapes_.begin(); i!=scene_.shapes_.end(); ++i)
+    {
+
+        if( ((**i).intersect(rl)>0)&&((**i).intersect(rl)<=length_two_points(ra, l.get_location())) )
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 
@@ -51,21 +70,21 @@ renderer::shade(shape const& shap, ray const& r)
 
 
     double ambient0=l.get_ambient()[0]*shap.get_material().get_ambient()[0];
-    double defuse0=l.get_defuse()[0]*(shap.get_material().get_defuse()[0] *scaleproduct(normalize(l.get_location()-r.getSchnitt(shap.intersect(r))), shap.make_normal(r.getSchnitt(shap.intersect(r))))+shap.get_material().get_specular()[0]*pow(scaleproduct(reflector(shap, r, l), normalize(-r.getDir())),shap.get_material().get_reflectivity()));
+    double defuse0=delta(shap, r, l)*l.get_defuse()[0]*(shap.get_material().get_defuse()[0] *scaleproduct(normalize(l.get_location()-r.getSchnitt(shap.intersect(r))), shap.make_normal(r.getSchnitt(shap.intersect(r))))+shap.get_material().get_specular()[0]*pow(scaleproduct(reflector(shap, r, l), normalize(-r.getDir())),shap.get_material().get_reflectivity()));
     if(defuse0<0)
     {
         defuse0=0;
     }
 
     double ambient1=l.get_ambient()[1]*shap.get_material().get_ambient()[1];
-    double defuse1=l.get_defuse()[1]*(shap.get_material().get_defuse()[1] *scaleproduct(normalize(l.get_location()-r.getSchnitt(shap.intersect(r))), shap.make_normal(r.getSchnitt(shap.intersect(r))))+shap.get_material().get_specular()[1]*pow(scaleproduct(reflector(shap, r, l), normalize(-r.getDir())),shap.get_material().get_reflectivity()));
+    double defuse1=delta(shap, r, l)*l.get_defuse()[1]*(shap.get_material().get_defuse()[1] *scaleproduct(normalize(l.get_location()-r.getSchnitt(shap.intersect(r))), shap.make_normal(r.getSchnitt(shap.intersect(r))))+shap.get_material().get_specular()[1]*pow(scaleproduct(reflector(shap, r, l), normalize(-r.getDir())),shap.get_material().get_reflectivity()));
     if(defuse1<0)
     {
         defuse1=0;
     }
 
     double ambient2=l.get_ambient()[2]*shap.get_material().get_ambient()[2];
-    double defuse2=l.get_defuse()[2]*(shap.get_material().get_defuse()[2] *scaleproduct(normalize(l.get_location()-r.getSchnitt(shap.intersect(r))), shap.make_normal(r.getSchnitt(shap.intersect(r))))+shap.get_material().get_specular()[2]*pow(scaleproduct(reflector(shap, r, l), normalize(-r.getDir())),shap.get_material().get_reflectivity()));
+    double defuse2=delta(shap, r, l)*l.get_defuse()[2]*(shap.get_material().get_defuse()[2] *scaleproduct(normalize(l.get_location()-r.getSchnitt(shap.intersect(r))), shap.make_normal(r.getSchnitt(shap.intersect(r))))+shap.get_material().get_specular()[2]*pow(scaleproduct(reflector(shap, r, l), normalize(-r.getDir())),shap.get_material().get_reflectivity()));
     if(defuse2<0)
     {
         defuse2=0;

@@ -17,7 +17,7 @@
 #include "shape.hpp"
 #include "tube.hpp"
 
-
+using namespace math3d;
 
 class scene
 {

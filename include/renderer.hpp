@@ -7,6 +7,8 @@
 #include "color.hpp"
 #include "material.hpp"
 
+class shape;
+
 class renderer
 {
     public:
@@ -14,6 +16,7 @@ class renderer
         renderer(scene const& s);
         ~renderer();
 
+        bool delta(shape const& mat, ray const& ray, light const& l);
         point3d reflector(shape const& mat, ray const& ray, light const& l);
         color shade(shape const& mat, ray const& r);
         void set_scene(scene const& s);
