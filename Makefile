@@ -27,7 +27,6 @@ HEADER =\
 	include/ppmwriter.hpp \
 	include/color.hpp \
 	include/vector.hpp \
-	include/point.hpp \
 	include/matrix.hpp \
 	include/material.hpp \
 	include/material_map.hpp \
@@ -49,7 +48,6 @@ SOURCE =\
 	src/pixel.cpp \
 	src/ppmwriter.cpp \
 	src/color.cpp \
-	src/point.cpp \
 	src/vector.cpp \
 	src/matrix.cpp \
 	src/material.cpp \

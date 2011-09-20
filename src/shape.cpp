@@ -40,12 +40,12 @@ shape::get_material() const
 
 
 double
-shape::distance (point3d origin, point3d a, point3d b) const
+shape::distance (math3d::point3d origin, math3d::point3d a, math3d::point3d b) const
 {
 	double t;
 
-	double d1=sqrt((origin.getX()-a.getX())*(origin.getX()-a.getX())+(origin.getY()-a.getY())*(origin.getY()-a.getY())+(origin.getZ()-a.getZ())*(origin.getZ()-a.getZ()));
-	double d2=sqrt((origin.getX()-b.getX())*(origin.getX()-b.getX())+(origin.getY()-b.getY())*(origin.getY()-b.getY())+(origin.getZ()-b.getZ())*(origin.getZ()-b.getZ()));
+	double d1=sqrt((origin[0]-a[0])*(origin[0]-a[0])+(origin[1]-a[1])*(origin[1]-a[1])+(origin[2]-a[2])*(origin[2]-a[2]));
+	double d2=sqrt((origin[0]-b[0])*(origin[0]-b[0])+(origin[1]-b[1])*(origin[1]-b[1])+(origin[2]-b[2])*(origin[2]-b[2]));
 
 	if (d1==d2 || d1<d2)
 	{ //Berührung -> eine Lsg. oder t1 mit kleinerem Abstand zum Strahlursprung

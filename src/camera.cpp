@@ -11,7 +11,7 @@ camera::camera()
 }
 
 camera::camera(std::string name, point3d const& loc, double w, double h, double fov)
-:name_(name), location_(loc), width_(w), heigth_(h), fov_x_(fov), d_(get_d())
+:name_(name), location_(loc), width_(w), heigth_(h), fov_x_(45), d_(get_d())
 {
     //ctor
 }
@@ -38,7 +38,7 @@ camera::calc_eye_ray(double x,double y) const
     double y_=(heigth_/width_)*(y/heigth_*2)-(heigth_/width_);
     point3d p (x_,y_,d_);
     //normalize (p);
-    ray r (location_, p);
+    ray r (point3d(0,0,0), p);
     return r;
 }
 

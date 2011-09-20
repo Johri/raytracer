@@ -97,7 +97,7 @@ triangle::intersect(ray const& r) const
 		//in Geradengleichung l einsetzen:
 		point3d schnitt=r.getOrigin()+l*dir;
 		//Entfernung Origin-Schnitt berechnen:
-		d=sqrt((r.getOrigin().getX()-schnitt.getX())*(r.getOrigin().getX()-schnitt.getX())+(r.getOrigin().getY()-schnitt.getY())*(r.getOrigin().getY()-schnitt.getY())+(r.getOrigin().getZ()-schnitt.getZ())*(r.getOrigin().getZ()-schnitt.getZ()));
+		d=sqrt((r.getOrigin()[0]-schnitt[0])*(r.getOrigin()[0]-schnitt[0])+(r.getOrigin()[1]-schnitt[1])*(r.getOrigin()[1]-schnitt[1])+(r.getOrigin()[2]-schnitt[2])*(r.getOrigin()[2]-schnitt[2]));
 		return d;
 	}
 	else

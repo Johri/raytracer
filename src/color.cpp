@@ -108,9 +108,33 @@ color::operator*=(color const& a)
 }
 
 
+
+////////////////////////////////////////////////////////////////////////////////
+color
+color::operator*=(double a)
+{
+  data_[0]*=a;
+  data_[1]*=a;
+  data_[2]*=a;
+  return *this;
+}
+
+
+
 ////////////////////////////////////////////////////////////////////////////////
 color
 operator*(color const& a, color const& b)
+{
+  color result(a);
+  result *= b;
+  return result;
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+color
+operator*(color const& a, double b)
 {
   color result(a);
   result *= b;
@@ -127,6 +151,7 @@ operator+(color const& a, color const& b)
   result += b;
   return result;
 }
+
 
 
 ////////////////////////////////////////////////////////////////////////////////

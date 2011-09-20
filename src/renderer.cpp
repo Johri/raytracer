@@ -33,6 +33,9 @@ renderer::delta(shape const& shap, ray const& r, light const& l)
 
     for(std::list<shape*>::iterator i=scene_.shapes_.begin(); i!=scene_.shapes_.end(); ++i)
     {
+        if (shap.get_name() == (*i)->get_name()) {
+          continue;
+        }
 
         if( ((**i).intersect(rl)>0)&&((**i).intersect(rl)<=length_two_points(ra, l.get_location())) )
         {
@@ -54,49 +57,77 @@ renderer::reflector(shape const& shap, ray const& ray, light const& l)
 
 
 color
+renderer::mirror(shape const& shap, ray const& ra)
+{
+    color mc;
+
+    double d;
+
+    math3d::point3d i=normalize(ra.getSchnitt(shap.intersect(ra))-ra.getOrigin());
+    math3d::point3d n=shap.make_normal(ra.getSchnitt(shap.intersect(ra)));
+    math3d::point3d r=i-2*scaleproduct(n, i)*n;
+
+    ray mr(ra.getSchnitt(shap.intersect(ra)), ra.getSchnitt(shap.intersect(ra))+r);
+
+for (std::list<light>::iterator il=scene_.lights_.begin(); il!=scene_.lights_.end(); ++il)
+{
+
+    for(std::list<shape*>::iterator i=scene_.shapes_.begin(); i!=scene_.shapes_.end(); ++i)
+    {
+
+        if( ((**i).intersect(mr)>0)&&((**i).intersect(mr)<=10000) )
+        {
+
+
+
+            d = delta((**i), mr, (*il));
+            mc= (*i)->get_material().get_ambient() + ((*i)->get_material().get_defuse() + (*i)->get_material().get_specular())  * d;
+            mc= mc*pow(std::max(0.0,scaleproduct(r, normalize(ra.getDir()))),(**i).get_material().get_reflectivity());
+            return mc;
+
+        }
+        else
+        {
+
+        }
+    }
+
+    }
+    return mc;
+}
+
+
+
+
+color
 renderer::shade(shape const& shap, ray const& r)
 {
-    light l (scene_.lights_.front());
+    color ambient;
+    color diffuse;
+    color specular;
+    color mirror_;
+    double d;
 
-//    color c (l.get_ambient() * mat.get_ambient());
-
-    //die alte version
-/*
-    double ambient0=l.get_ambient()[0]*shap.get_material().get_ambient()[0]+l.get_defuse()[0]*(shap.get_material().get_defuse()[0] *scaleproduct(normalize(l.get_location()-r.getSchnitt(shap.intersect(r))), shap.make_normal(r.getSchnitt(shap.intersect(r))))+shap.get_material().get_specular()[0]*pow(scaleproduct(reflector(shap, r), normalize(-r.getDir())),shap.get_material().get_reflectivity()));
-    double ambient1=l.get_ambient()[1]*shap.get_material().get_ambient()[1]+l.get_defuse()[1]*(shap.get_material().get_defuse()[1] *scaleproduct(normalize(l.get_location()-r.getSchnitt(shap.intersect(r))), shap.make_normal(r.getSchnitt(shap.intersect(r))))+shap.get_material().get_specular()[1]*pow(scaleproduct(reflector(shap, r), normalize(-r.getDir())),shap.get_material().get_reflectivity()));
-    double ambient2=l.get_ambient()[2]*shap.get_material().get_ambient()[2]+l.get_defuse()[2]*(shap.get_material().get_defuse()[2] *scaleproduct(normalize(l.get_location()-r.getSchnitt(shap.intersect(r))), shap.make_normal(r.getSchnitt(shap.intersect(r))))+shap.get_material().get_specular()[2]*pow(scaleproduct(reflector(shap, r), normalize(-r.getDir())),shap.get_material().get_reflectivity()));
-*/
-
-
-
-    double ambient0=l.get_ambient()[0]*shap.get_material().get_ambient()[0];
-    double defuse0=delta(shap, r, l)*l.get_defuse()[0]*(shap.get_material().get_defuse()[0] *scaleproduct(normalize(l.get_location()-r.getSchnitt(shap.intersect(r))), shap.make_normal(r.getSchnitt(shap.intersect(r))))+shap.get_material().get_specular()[0]*pow(scaleproduct(reflector(shap, r, l), normalize(-r.getDir())),shap.get_material().get_reflectivity()));
-    if(defuse0<0)
+    for (std::list<light>::iterator i=scene_.lights_.begin(); i!=scene_.lights_.end(); ++i)
     {
-        defuse0=0;
+
+
+
+
+    d = delta(shap, r,(*i));
+
+    ambient+= i->get_ambient() * shap.get_material().get_ambient();
+    diffuse+= i->get_defuse()  * shap.get_material().get_defuse() * std::max(0.0,(scaleproduct(normalize(i->get_location()-r.getSchnitt(shap.intersect(r))),shap.make_normal(r.getSchnitt(shap.intersect(r))))));
+    specular+= shap.get_material().get_specular() * pow(std::max(0.0,scaleproduct(reflector(shap, r, (*i)), normalize(-r.getDir()))),shap.get_material().get_reflectivity());
+    mirror_+= mirror(shap, r);
+
+
+
+
     }
 
-    double ambient1=l.get_ambient()[1]*shap.get_material().get_ambient()[1];
-    double defuse1=delta(shap, r, l)*l.get_defuse()[1]*(shap.get_material().get_defuse()[1] *scaleproduct(normalize(l.get_location()-r.getSchnitt(shap.intersect(r))), shap.make_normal(r.getSchnitt(shap.intersect(r))))+shap.get_material().get_specular()[1]*pow(scaleproduct(reflector(shap, r, l), normalize(-r.getDir())),shap.get_material().get_reflectivity()));
-    if(defuse1<0)
-    {
-        defuse1=0;
-    }
+    color clr = ambient + (diffuse*0.5 + specular*0.4 + mirror_*0.1) * d;
 
-    double ambient2=l.get_ambient()[2]*shap.get_material().get_ambient()[2];
-    double defuse2=delta(shap, r, l)*l.get_defuse()[2]*(shap.get_material().get_defuse()[2] *scaleproduct(normalize(l.get_location()-r.getSchnitt(shap.intersect(r))), shap.make_normal(r.getSchnitt(shap.intersect(r))))+shap.get_material().get_specular()[2]*pow(scaleproduct(reflector(shap, r, l), normalize(-r.getDir())),shap.get_material().get_reflectivity()));
-    if(defuse2<0)
-    {
-        defuse2=0;
-    }
-
-    //if(normalize(l.get_location()-shap.())<=0&&normalize(l.get_location-shap.intersect())>1000)
-
-    //color c (l.get_ambient()[0]*shap.get_material().get_ambient()[0]+l.get_defuse()[0]*shap.get_material().get_defuse()[0], l.get_ambient()[1]*shap.get_material().get_ambient()[1]+l.get_defuse()[1]*(shap.get_material().get_defuse()[1]), l.get_ambient()[2]*shap.get_material().get_ambient()[2]+l.get_defuse()[2]*(shap.get_material().get_defuse()[2]));
-    color clr (ambient0+defuse0, ambient1+defuse1, ambient2+defuse2);
-    //color clr (ambient0, ambient1, ambient2);
-    //std::cout<<c<<std::endl;
-    //std::cout<<clr<<std::endl;
     return clr;
 }
 
@@ -119,7 +150,7 @@ renderer::raytrace(ray const& r)
             if(((*i)->intersect(r)<border)&&((*i)->intersect(r)>0)&&((*i)->intersect(r)<d))
             {
                 d=(*i)->intersect(r);
-                c=color((*i)->get_material().get_ambient());
+                //c=color((*i)->get_material().get_ambient());
                 //c=shade((*i)->get_material());
                 c=shade(**i, r);
             }

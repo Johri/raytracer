@@ -5,6 +5,9 @@
 
 #include "point3d.hpp"
 #include "color.hpp"
+#include <iosfwd>
+
+using namespace math3d;
 
 class light //Punktlichtquelle
 {
@@ -19,7 +22,7 @@ class light //Punktlichtquelle
         void translate (double x, double y, double z);
         void rotate ();
 
-       void print_on(std::ostream& str) const;
+    void print_on(std::ostream& str) const;
 
     private:
     std::string name_;

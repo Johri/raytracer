@@ -52,7 +52,7 @@ sphere::surface() const
 bool
 sphere::is_inside(point3d const& point) const
 {
-	return ((point.getX()-center_.getX())<radius_ && (point.getY()-center_.getY())<radius_ && (point.getZ()-center_.getZ())<radius_);
+	return ((point[0]-center_[0])<radius_ && (point[1]-center_[1])<radius_ && (point[2]-center_[2])<radius_);
 }
 
 
@@ -107,9 +107,9 @@ double sphere::intersect(ray const& r) const
 point3d
 sphere::make_normal(point3d const& p) const
 {
-    double a=(p.getX()-center_.getX())/radius_;
-	double b=(p.getY()-center_.getY())/radius_;
-	double c=(p.getZ()-center_.getZ())/radius_;
+    double a=(p[0]-center_[0])/radius_;
+	double b=(p[1]-center_[1])/radius_;
+	double c=(p[2]-center_[2])/radius_;
 	point3d norm(a,b,c);
 	return normalize(norm);
 }

@@ -25,12 +25,12 @@
 #include <limits>                 // std::numeric_limits
 
 // includes, project
-#include <point.hpp>
+#include "point3d.hpp"
 
 // internal unnamed namespace
 
 namespace {
-  
+
   // types, internal (class, enum, struct, union, typedef)
 
   // variables, internal
@@ -48,7 +48,7 @@ namespace {
     0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 1.0
   };
-  
+
   // functions, internal
 
   double
@@ -59,20 +59,20 @@ namespace {
     return ((a1 * b2 * c3) + (a2 * b3 * c1) + (a3 * b1 * c2) -
             (a1 * b3 * c2) - (a2 * b1 * c3) - (a3 * b2 * c1));
   }
-  
+
 } // namespace {
 
 namespace math3d {
-  
+
   // variables, exported
-  
+
   // functions, exported
-  
+
   matrix::matrix()
   {
     std::copy(ident_array16, ident_array16+16, data_);
   }
-  
+
   matrix::matrix(matrix const& rhs)
   {
     std::copy(rhs.data_, rhs.data_+16, data_);
@@ -110,7 +110,7 @@ namespace math3d {
     matrix tmp(rhs);
 
     swap(tmp);
-    
+
     return *this;
   }
 
@@ -118,7 +118,7 @@ namespace math3d {
   matrix::operator*=(matrix const& rhs)
   {
     matrix tmp;
-    
+
     tmp.data_[ 0] = (data_[ 0] * rhs.data_[ 0] +
                      data_[ 4] * rhs.data_[ 1] +
                      data_[ 8] * rhs.data_[ 2] +
@@ -183,9 +183,9 @@ namespace math3d {
                      data_[ 7] * rhs.data_[13] +
                      data_[11] * rhs.data_[14] +
                      data_[15] * rhs.data_[15]);
-    
+
     swap(tmp);
-    
+
     return *this;
   }
 
@@ -194,7 +194,7 @@ namespace math3d {
   {
     for (unsigned idx = 0; idx < 16; ++idx)
       data_[idx] *= rhs;
-    
+
     return *this;
   }
 
@@ -203,10 +203,10 @@ namespace math3d {
   {
     for (unsigned idx = 0; idx < 16; ++idx)
       data_[idx] /= rhs;
-    
+
     return *this;
   }
-  
+
   double
   matrix::determinant() const
   {
@@ -214,22 +214,22 @@ namespace math3d {
     double const& b1(data_[ 4]);
     double const& c1(data_[ 8]);
     double const& d1(data_[12]);
-    
+
     double const& a2(data_[ 1]);
     double const& b2(data_[ 5]);
     double const& c2(data_[ 9]);
     double const& d2(data_[13]);
-    
+
     double const& a3(data_[ 2]);
     double const& b3(data_[ 6]);
     double const& c3(data_[10]);
     double const& d3(data_[14]);
-    
+
     double const& a4(data_[ 3]);
     double const& b4(data_[ 7]);
     double const& c4(data_[11]);
     double const& d4(data_[15]);
-    
+
     return (a1 * det3_helper(b2, b3, b4, c2, c3, c4, d2, d3, d4) -
             b1 * det3_helper(a2, a3, a4, c2, c3, c4, d2, d3, d4) +
             c1 * det3_helper(a2, a3, a4, b2, b3, b4, d2, d3, d4) -
@@ -241,13 +241,13 @@ namespace math3d {
   {
     return data_[0] + data_[5] + data_[10] + data_[15];
   }
-  
+
   bool
   matrix::invert()
   {
     bool         result(false);
     double const d(determinant());
-    
+
     if (0.0 != d) {
       double const& a1(data_[ 0]);
       double const& b1(data_[ 4]);
@@ -265,9 +265,9 @@ namespace math3d {
       double const& b4(data_[ 7]);
       double const& c4(data_[11]);
       double const& d4(data_[15]);
-      
+
       double const di(1.0 / d);
-      
+
       matrix tmp;
 
       tmp.data_[ 0] =  det3_helper(b2, b3, b4, c2, c3, c4, d2, d3, d4) * di;
@@ -286,9 +286,9 @@ namespace math3d {
       tmp.data_[13] =  det3_helper(a1, a2, a3, c1, c2, c3, d1, d2, d3) * di;
       tmp.data_[14] = -det3_helper(a1, a2, a3, b1, b2, b3, d1, d2, d3) * di;
       tmp.data_[15] =  det3_helper(a1, a2, a3, b1, b2, b3, c1, c2, c3) * di;
-      
+
       swap(tmp);
-      
+
       result = true;
     }
 
@@ -325,15 +325,15 @@ namespace math3d {
   }
 
   /* static */
-  matrix const& 
+  matrix const&
   matrix::null()
   {
     static matrix null_(null_array16);
     return null_;
   }
-  
+
   /* static */
-  matrix const& 
+  matrix const&
   matrix::identity()
   {
     static matrix identity_(ident_array16);
@@ -369,11 +369,11 @@ namespace math3d {
   {
     return matrix(lhs) /= rhs;
   }
-  
-  point
-  operator*(matrix const& lhs, const point& rhs)
+
+  point3d
+  operator*(matrix const& lhs, const point3d& rhs)
   {
-    return point(lhs[0] * rhs[0] +
+    return point3d(lhs[0] * rhs[0] +
                  lhs[4] * rhs[1] +
                  lhs[8] * rhs[2] +
                  lhs[12] * rhs[3],
@@ -390,29 +390,8 @@ namespace math3d {
                  lhs[11] * rhs[2] +
                  lhs[15] * rhs[3]);
   }
-  
-  vector
-  operator*(matrix const& lhs, const vector& rhs)
-  {
-    return vector(lhs[0] * rhs[0] +
-                  lhs[4] * rhs[1] +
-                  lhs[8] * rhs[2] +
-                  lhs[12] * rhs[3],
-                  lhs[1] * rhs[0] +
-                  lhs[5] * rhs[1] +
-                  lhs[9] * rhs[2] +
-                  lhs[13] * rhs[3],
-                  lhs[2] * rhs[0] +
-                  lhs[6] * rhs[1] +
-                  lhs[10] * rhs[2] +
-                  lhs[14] * rhs[3],
-                  lhs[3] * rhs[0] +
-                  lhs[7] * rhs[1] +
-                  lhs[11] * rhs[2] +
-                  lhs[15] * rhs[3]);
-  }
 
-  bool 
+  bool
   operator==(matrix const& lhs, matrix const& rhs)
   {
   return (std::fabs(lhs[0] - rhs[0]) < std::numeric_limits<double>::epsilon() &&
@@ -430,7 +409,7 @@ namespace math3d {
           std::fabs(lhs[0] - rhs[0]) < std::numeric_limits<double>::epsilon() &&
           std::fabs(lhs[4] - rhs[4]) < std::numeric_limits<double>::epsilon() &&
           std::fabs(lhs[8] - rhs[8]) < std::numeric_limits<double>::epsilon() &&
-          std::fabs(lhs[12] - rhs[12]) < std::numeric_limits<double>::epsilon());  
+          std::fabs(lhs[12] - rhs[12]) < std::numeric_limits<double>::epsilon());
   }
 
   matrix
@@ -441,12 +420,12 @@ namespace math3d {
     tmp[12] = a;
     tmp[13] = b;
     tmp[14] = c;
-    
+
     return tmp;
   }
 
   matrix
-  make_translation(vector const& a)
+  make_translation(math3d::point3d const& a)
   {
     return make_translation(a[0], a[1], a[2]);
   }
@@ -459,12 +438,12 @@ namespace math3d {
     tmp[0] = a;
     tmp[5] = b;
     tmp[10] = c;
-    
+
     return tmp;
   }
 
   matrix
-  make_scale(vector const& a)
+  make_scale(math3d::point3d const& a)
   {
     return make_scale(a[0], a[1], a[2]);
   }
@@ -474,14 +453,14 @@ namespace math3d {
   {
     double const cos_a(std::cos(a));
     double const sin_a(std::sin(a));
-    
+
     matrix tmp;
 
     tmp[5] =  cos_a;
     tmp[9] =  sin_a;
     tmp[6] = -sin_a;
     tmp[10] =  cos_a;
-    
+
     return tmp;
   }
 
@@ -490,14 +469,14 @@ namespace math3d {
   {
     double const cos_a(std::cos(a));
     double const sin_a(std::sin(a));
-    
+
     matrix tmp;
 
     tmp[0] =  cos_a;
     tmp[8] = -sin_a;
     tmp[2] =  sin_a;
     tmp[10] =  cos_a;
-    
+
     return tmp;
   }
 
@@ -506,14 +485,14 @@ namespace math3d {
   {
     double const cos_a(std::cos(a));
     double const sin_a(std::sin(a));
-    
+
     matrix tmp;
 
     tmp[0] =  cos_a;
     tmp[4] =  sin_a;
     tmp[1] = -sin_a;
     tmp[5] =  cos_a;
-    
+
     return tmp;
   }
 
@@ -528,14 +507,14 @@ namespace math3d {
   {
     return a.trace();
   }
-  
+
   matrix
   inverse(matrix const& a)
   {
     matrix tmp(a);
 
     tmp.invert();
-    
+
     return tmp;
   }
 
@@ -545,10 +524,10 @@ namespace math3d {
     matrix tmp(a);
 
     tmp.transpose();
-    
+
     return tmp;
   }
-  
+
   bool
   is_invertible(matrix const& a)
   {
@@ -590,5 +569,5 @@ namespace math3d {
 
     return os;
   }
-  
+
 } // namespace math3d {

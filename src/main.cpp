@@ -9,9 +9,8 @@
 #include <boost/thread/thread.hpp>
 #include <boost/bind.hpp>
 
-#include <vector.hpp>
+//#include <vector.hpp>
 #include <matrix.hpp>
-#include <point.hpp>
 #include "material.hpp"
 #include "triangle.hpp"
 #include "box.hpp"

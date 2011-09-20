@@ -15,8 +15,6 @@
 #include <ostream>
 #include <cmath>
 
-using namespace math3d;
-
 class shape
 {
     public:
@@ -27,8 +25,8 @@ class shape
         std::string const& get_name() const;
         material const& get_material() const;
         virtual double intersect(ray const& r) const=0;
-        virtual point3d make_normal(point3d const& p) const=0;
-        double distance (point3d origin, point3d a, point3d b) const;
+        virtual math3d::point3d make_normal(math3d::point3d const& p) const=0;
+        double distance (math3d::point3d origin, math3d::point3d a, math3d::point3d b) const;
 
         virtual void print_on(std::ostream& str) const;
 

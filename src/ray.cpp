@@ -13,7 +13,7 @@ ray::ray()
 }
 
 
-ray::ray(point3d const& origin, point3d const& direction)
+ray::ray(math3d::point3d const& origin, math3d::point3d const& direction)
 :origin_(origin), direction_(direction)
 {
 
@@ -36,17 +36,17 @@ ray::~ray()
 
 
 
-point3d const&
+math3d::point3d const&
 ray::getOrigin()const
 {
 	return origin_;
 }
 
 
-point3d
+math3d::point3d
 ray::getDir()const
 {
-	point3d dir=direction_-origin_;
+	math3d::point3d dir=direction_-origin_;
 	return dir;
 }
 
@@ -72,10 +72,10 @@ ray::getColor(double t, shape const& s, ray const& r) const
 }
 
 
-point3d
+math3d::point3d
 ray::getSchnitt(double t) const
 {
-	point3d p=origin_+t*normalize(direction_-origin_);
+	math3d::point3d p=origin_+t*normalize(direction_-origin_);
 	return p;
 }
 

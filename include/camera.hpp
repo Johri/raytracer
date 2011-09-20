@@ -5,6 +5,8 @@
 #include "point3d.hpp"
 #include <string>
 
+using namespace math3d;
+
 class camera
 {
     public:

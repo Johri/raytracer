@@ -1,6 +1,7 @@
 #include "light.hpp"
 
-
+#include <iomanip>                // std::fixed, std::setprecision
+#include <ostream>
 
 light::light()
 :name_("standard light"), location_(0,0,0), ambient_(1,1,1), defuse_(1,1,1)
@@ -53,7 +54,7 @@ light::rotate()
 void
 light::print_on(std::ostream& str) const
 {
-	str <<"LIGHT"<<"\n"<<"   Name: "<< name_<<"\n"<<"   Location: "<<location_<<"   ambient: "<<ambient_<<"   defuse: "<<defuse_<<std::flush;
+	str<<"LIGHT"<<"\n"<<"   Name: "<< name_<<"\n"<<"   Location: "<<location_<<"   ambient: "<<ambient_<<"   defuse: "<<defuse_<<std::flush;
 }
 
 

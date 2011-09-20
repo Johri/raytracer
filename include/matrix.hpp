@@ -20,18 +20,18 @@
 #include <iosfwd> // fwd. decl: std::ostream
 
 // includes, project
-#include <vector.hpp>
+//#include <vector.hpp>
 
 namespace math3d {
 
   // types, exported (class, enum, struct, union, typedef)
 
-  class point;
-  
+  class point3d;
+
   class matrix {
 
   public:
-    
+
     matrix();
     matrix(matrix const&);
     matrix(double const [16]);
@@ -39,18 +39,18 @@ namespace math3d {
     ~matrix();
 
     void swap(matrix&);
-    
-    
+
+
     double const& operator[](unsigned) const;
     double&       operator[](unsigned);
     matrix& operator=(matrix const&);
     matrix& operator*=(matrix const&);
     matrix& operator*=(double);
     matrix& operator/=(double);
-    
+
     double determinant() const;
     double trace() const;
- 
+
     bool invert();
     void transpose();
 
@@ -58,7 +58,7 @@ namespace math3d {
 
     static matrix const& null();     // m[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
     static matrix const& identity(); // m[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
-    
+
   private:
 
     double data_[16];
@@ -66,28 +66,27 @@ namespace math3d {
   };
 
   // variables, exported (extern)
-  
+
   // functions, inlined (inline)
-  
+
   // functions, exported (extern)
 
   matrix operator-(matrix const&);
-  
+
   matrix operator*(matrix const&, matrix const&);
   matrix operator*(matrix const&, double);
   matrix operator*(double, matrix const&);
   matrix operator/(matrix const&, double);
-  
-  point  operator*(matrix const&, point const&);
-  vector operator*(matrix const&, vector const&);
+
+  point3d  operator*(matrix const&, math3d::point3d const&);
 
   bool operator==(matrix const&, matrix const&);
 
   matrix make_translation(double, double, double);
-  matrix make_translation(vector const&);
+  matrix make_translation(math3d::point3d const&);
 
   matrix make_scale(double, double, double);
-  matrix make_scale(vector const&);
+  matrix make_scale(math3d::point3d const&);
 
   matrix make_rotation_x(double);
   matrix make_rotation_y(double);
@@ -99,7 +98,7 @@ namespace math3d {
   matrix transpose(matrix const&);
 
   bool is_invertible(matrix const&);
-  
+
   std::ostream& operator<<(std::ostream&, matrix const&);
 
 } // namespace math3d {

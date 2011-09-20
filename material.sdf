@@ -1,11 +1,11 @@
 # materials
 define material red           .1  0  0       1  0  0      1  1  1     1
-define material blue           0  0 .1       0  0  1      0  0  1     1
-define material green          0 .1  0       0  1  0      0  1  0     1
-define material yellow        .1 .1  0       1  1  0      1  1  0     1
+define material blue           0  0 .1       0  0  1      1  1  1     1
+define material green          0 .1  0       0  1  0      1  1  1     1
+define material yellow        .1 .1  0       1  1  0      1  1  1     1
 define material b_yellow      .3 .3 .18      1  1 .6      1  1  1     50
 define material white         .1 .1  0       1  1  0      1  1  1     50
-define material grey          .3 .3 .3      .8 .8 .8      1  1  1     50
+define material grey          .3 .3 .3      .9 .9 .9      1  1  1     50
 
 # geometry
 define shape sphere ball         -5 0 -20       5                       grey
@@ -17,15 +17,20 @@ define shape triangle löffelh2   -4 3 -18    -3.5 9 -21  -4.5 9.5 -21   grey
 define shape triangle löffelsp2  -3 8 -21.5  -3.5 9 -21  -4.5 9.5 -21   grey
 define shape triangle  tür1      14 -5 -100   34 -5 -100  34 30 -100    blue
 define shape triangle  tür2      14 -5 -100   34 30 -100  14 30 -100    blue
-define shape triangle boden1     34 -5 -100   14 -5 -100  -6 -5 -20     white
-define shape triangle boden2     34 -5 -100   -6 -5 -20   3.5 -5 -13    white
+#define shape triangle boden1     34 -5 -100   14 -5 -100  -6 -5 -20     white
+#define shape triangle boden2     34 -5 -100   -6 -5 -20   3.5 -5 -13    white
 #define shape tube     zylinder    4 -2 -30     8 -2  -30    5          red
-define shape circle   kreis      -8 6 -20    -8 6 -23     -2 9 -20    b_yellow
-define shape box      kiste      10 11 -22     6 8 -24                  green
+#define shape circle   kreis     -8 6 -20    -8 6 -23     -2 9 -20    b_yellow
+#define shape box      kiste       5 2 -18     1 -2 -22                  green
+
+define shape sphere reflexiontest 5 0 -20      3                      yellow
+define shape sphere reflexiontest 5 2 -20      2.5                      red
 
 # light - from right above
-define light sun 30 5 -10 1 1 1 1 1 1
-define light lamp -5 30 -6 0.3 0.3 0.3 0.4 0.4 0.4
+#define light laterne 0 20 -20 .3 .3 .3 .8 .8 .8
+define light helle_laterne 0 20 -20 .5 .5 .5 1 1 1
+define light sun -200 10 500 .5 .5 .5 .9 .9 .9
+#define light lamp -5 30 -6 0.3 0.3 0.3 0.4 0.4 0.4
 
 # camera
 define camera eye 0 0 0 500 500 1.1

@@ -28,6 +28,7 @@ public : // methods
   void            operator+=  ( const color& );
 
   color           operator*=   ( const color& );
+  color           operator*=   ( double );
 
 
 private: // members
@@ -35,6 +36,7 @@ private: // members
 };
 
 color operator*(const color& a, const color& b);
+color operator*(const color& a, double b);
 color operator+(const color& a, const color& b);
 std::ostream& operator<<(std::ostream& os, color const&);
 
