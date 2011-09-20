@@ -57,6 +57,52 @@ renderer::reflector(shape const& shap, ray const& ray, light const& l)
 
 
 color
+renderer::refrection(shape const& shap, ray const& ra)
+{/*
+    color mc;
+    double n1=1.0;
+    double n2=shap.get_material().get_dansity();
+
+    math3d::point3d i=normalize(ra.getSchnitt(shap.intersect(ra))-ra.getOrigin());
+    math3d::point3d n=shap.make_normal(ra.getSchnitt(shap.intersect(ra)));
+
+    math3d::point3d t=((n1/n2)*(i-n*scaleproduct(n,i)))-n * sqrt(1-((pow(n1,2)*(1-pow(scaleproduct(n,i),2))))/pow(n2,2));
+
+    double d;
+
+    ray mr(ra.getSchnitt(shap.intersect(ra)), ra.getSchnitt(shap.intersect(ra))+t);
+
+for (std::list<light>::iterator il=scene_.lights_.begin(); il!=scene_.lights_.end(); ++il)
+{
+
+    for(std::list<shape*>::iterator i=scene_.shapes_.begin(); i!=scene_.shapes_.end(); ++i)
+    {
+
+        if( ((**i).intersect(mr)>0)&&((**i).intersect(mr)<=10000) )
+        {
+
+
+
+            d = delta((**i), mr, (*il));
+            mc= (*i)->get_material().get_ambient() + ((*i)->get_material().get_diffuse() + (*i)->get_material().get_specular())  * d;
+            mc= mc*pow(std::max(0.0,scaleproduct(t, normalize(ra.getDir()))),(**i).get_material().get_reflectivity());
+            return mc;
+
+        }
+        else
+        {
+
+        }
+    }
+
+    }
+    return mc;
+    */
+}
+
+
+
+color
 renderer::mirror(shape const& shap, ray const& ra)
 {
     color mc;
@@ -81,9 +127,10 @@ for (std::list<light>::iterator il=scene_.lights_.begin(); il!=scene_.lights_.en
 
 
             d = delta((**i), mr, (*il));
-            mc= (*i)->get_material().get_ambient() + ((*i)->get_material().get_defuse() + (*i)->get_material().get_specular())  * d;
+            mc= (*i)->get_material().get_ambient() + ((*i)->get_material().get_diffuse() + (*i)->get_material().get_specular())  * d;
             mc= mc*pow(std::max(0.0,scaleproduct(r, normalize(ra.getDir()))),(**i).get_material().get_reflectivity());
             return mc;
+
 
         }
         else
@@ -105,7 +152,7 @@ renderer::shade(shape const& shap, ray const& r)
     color ambient;
     color diffuse;
     color specular;
-    color mirror_;
+    double opacity=shap.get_material().get_opacity();
     double d;
 
     for (std::list<light>::iterator i=scene_.lights_.begin(); i!=scene_.lights_.end(); ++i)
@@ -116,17 +163,23 @@ renderer::shade(shape const& shap, ray const& r)
 
     d = delta(shap, r,(*i));
 
+    math3d::point3d Schnittpunkt=r.getSchnitt(shap.intersect(r));
+
     ambient+= i->get_ambient() * shap.get_material().get_ambient();
-    diffuse+= i->get_defuse()  * shap.get_material().get_defuse() * std::max(0.0,(scaleproduct(normalize(i->get_location()-r.getSchnitt(shap.intersect(r))),shap.make_normal(r.getSchnitt(shap.intersect(r))))));
-    specular+= shap.get_material().get_specular() * pow(std::max(0.0,scaleproduct(reflector(shap, r, (*i)), normalize(-r.getDir()))),shap.get_material().get_reflectivity());
-    mirror_+= mirror(shap, r);
+    diffuse+= (i->get_diffuse()  * shap.get_material().get_diffuse() * std::max(0.0,(scaleproduct(normalize(i->get_location()-Schnittpunkt),shap.make_normal(Schnittpunkt)))))*d;
+    specular+= (shap.get_material().get_specular() * pow(std::max(0.0,scaleproduct(reflector(shap, r, (*i)), normalize(-r.getDir()))),shap.get_material().get_reflectivity()))*d;
 
 
 
 
     }
 
-    color clr = ambient + (diffuse*0.8 + specular*0.2 + mirror_*0.1) * d;
+    color mirror_= mirror(shap, r);//*delta(shap,r,);
+
+    color refrection_= refrection(shap, r);
+
+
+    color clr = ambient + (diffuse*0.8 + specular*0.2 + mirror_*0.1);// + refrection_*opacity);
 
     return clr;
 }
@@ -145,6 +198,7 @@ renderer::raytrace(ray const& r)
     color c (0,0,0);
     double border=10000;
     double d=border;
+    shape* nearest_shape=0;
         for(std::list<shape*>::iterator i=scene_.shapes_.begin(); i!=scene_.shapes_.end(); ++i)
         {
             if(((*i)->intersect(r)<border)&&((*i)->intersect(r)>0)&&((*i)->intersect(r)<d))

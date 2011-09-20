@@ -136,11 +136,15 @@ scene::load_sdf(std::string const& sdf)
                         std::cout<<ksb<<" ";
                         float m;
                         ss>>m;
-                        std::cout<<m<<std::endl;
+                        float o;
+                        ss>>o;
+                        float d;
+                        ss>>d;
+                        std::cout<<m<<"\n"<<o<<"\n"<<d<<std::endl;
                         color ka (kar, kag, kab);
                         color kd (kdr, kdg, kdb);
                         color ks (ksr, ksg, ksb);
-                        materials_[mat_name.c_str()] = material(mat_name, ka, kd, ks, m);
+                        materials_[mat_name.c_str()] = material(mat_name, ka, kd, ks, m, o, d);
                     }
                     else
                     {

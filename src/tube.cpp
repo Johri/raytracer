@@ -69,10 +69,10 @@ tube::make_normal(math3d::point3d const& schnittpunkt) const
 		double zaehler=schnittpunkt[0]*q[0]-start_[0]*q[0]+schnittpunkt[1]*q[1]-start_[1]*q[1]+schnittpunkt[2]*q[2]-start_[2]*q[2];
 		double nenner=q[0]*q[0]+q[1]*q[1]+q[2]*q[2];
 		double temp=zaehler/nenner;
-		std::cout<<"Zähler:"<<zaehler<<std::endl;
+		//std::cout<<"Zähler:"<<zaehler<<std::endl;
 		math3d::point3d m=start_+temp*q;
-		std::cout<<"temp: "<<temp<<std::endl;
-		std::cout<<"Lotfusspunkt: "<<m<<std::endl;
+		//std::cout<<"temp: "<<temp<<std::endl;
+		//std::cout<<"Lotfusspunkt: "<<m<<std::endl;
 		math3d::point3d norm=schnittpunkt-m;
 		return normalize(norm);
 	}
@@ -89,22 +89,15 @@ double
 tube::intersect(ray const& r) const
 {
 	double t,t1,t2,t_temp1, t_temp2,t_temp3, t_temp;
-	math3d::point3d schnitt1, schnitt2;
+	point3d schnitt1, schnitt2;
 	double height=length_two_points(start_, end_);
-	math3d::point3d dir=normalize(r.getDir());
-	math3d::point3d q= normalize(end_-start_); //Richtungsvektor der Zylindermittelachse normalisiert
-	math3d::point3d a= r.getOrigin()-start_;
+	point3d dir=normalize(r.getDir());
+	point3d q= normalize(end_-start_); //Richtungsvektor der Zylindermittelachse normalisiert
+	point3d a= r.getOrigin()-start_;
 
 	//Erstmal Schnittpunkte mit Zylinder ermitteln:
-	math3d::point3d e= dir-(scaleproduct(dir, q)/scaleproduct(q, q))*q;
-	math3d::point3d f= a-(scaleproduct(a, q)/scaleproduct(q, q))*q;
-
-	/*	if (dir.getX()/q.getX()==dir.getY()/q.getY()) {
-		if (dir.getX()/q.getX()==dir.getZ()/q.getZ()) {
-			std::cout<<"Strahl verläuft parallel zum Zylinder"<<std::endl;
-			t=-1; //vorläufig. danach beim geschlossenen Zylinder den Deckel und den Boden HIER berechnen
-		}
-	}*/
+	point3d e= dir-(scaleproduct(dir, q)/scaleproduct(q, q))*q;
+	point3d f= a-(scaleproduct(a, q)/scaleproduct(q, q))*q;
 
 	//übersichtlich zusammenfassen: t_temp1
 	double one, two, three;
@@ -128,19 +121,19 @@ tube::intersect(ray const& r) const
 		//std::cout<<"Kein Schnittpunkt mit Zylinder"<<std::endl;
 		t_temp1=-1;
 	}else {
-	t1=-two-sqrt(two*two-(4*one*three))/nenner;
+	t1=(-two-sqrt(two*two-(4*one*three)))/nenner;
 		schnitt1=r.getOrigin()+t1*dir;
-	t2=-two+sqrt(two*two-(4*one*three))/nenner;
+	t2=(-two+sqrt(two*two-(4*one*three)))/nenner;
 		schnitt2=r.getOrigin()+t2*dir;
 
 		//std::cout << "t1:"<<t1<<std::endl;
 		//std::cout << "t2:"<<t2<<std::endl;
 
-		double x1=scaleproduct(schnitt1, q)/scaleproduct(q, q);
+	/*	double x1=scaleproduct(schnitt1, q)/scaleproduct(q, q);
 		double x2=scaleproduct(schnitt2, q)/scaleproduct(q, q);
 
-	//std::cout<<"x1: "<<x1<<std::endl;
-	//std::cout<<"x2: "<<x2<<std::endl;
+	std::cout<<"x1: "<<x1<<std::endl;
+	std::cout<<"x2: "<<x2<<std::endl;*/
 
 
 		//gucken, welcher der Abstände kleiner ist, aber größer als 0:
@@ -162,18 +155,14 @@ tube::intersect(ray const& r) const
 	//std::cout<<"Schnittpunkt mit dem Zylinder"<<t_temp1<<std::endl;
 
 		//hier gucken wir, ob die Länge des Zylinders nicht überschritten wird:
-		math3d::point3d mittelpunkt=start_+height/2*normalize(end_-start_);
-		//std::cout<<"Mittelhöhe: "<<mittelpunkt<<std::endl;
-		double hypothenuse_x1=length_two_points(schnitt1, mittelpunkt);
-		//std::cout<<"Schnitt2: "<<schnitt2<<std::endl;
-		//std::cout<<"Hypothenuse: "<<hypothenuse_x1<<std::endl;
-		double this_height_x1=sqrt(hypothenuse_x1*hypothenuse_x1-r_*r_);
-		//std::cout<<"Höhe 1: "<<this_height_x1<<std::endl;
+		point3d mittelpunkt=start_+height/2*normalize(end_-start_);
+		double hypothenuse_x1=length_two_points(schnitt1, mittelpunkt)+0.001;
+		double radius=r_*r_;
 
-		double hypothenuse_x2=length_two_points(schnitt1, mittelpunkt);
-		double this_height_x2=sqrt(hypothenuse_x2*hypothenuse_x2-r_*r_);
-		//std::cout<<"Höhe 2: "<<this_height_x2<<std::endl;
-		//std::cout<<"Tatsächliche Höhe: "<<height<<std::endl;
+		double this_height_x1=sqrt(hypothenuse_x1*hypothenuse_x1-radius);
+
+		double hypothenuse_x2=length_two_points(schnitt1, mittelpunkt)+0.001;
+		double this_height_x2=sqrt(hypothenuse_x2*hypothenuse_x2-radius);
 
 	if (t_temp1==t2) {
 		if (this_height_x2<=height/2) {
@@ -197,7 +186,7 @@ tube::intersect(ray const& r) const
 
 	if (scaleproduct(q, dir)!=0) {
 		double temp=(scaleproduct(q, r.getOrigin())+s)/scaleproduct(q, dir);
-		math3d::point3d schnitt=r.getOrigin()+temp*dir;
+		point3d schnitt=r.getOrigin()+temp*dir;
 		if (length_two_points(schnitt, start_)<=r_) {
 			t_temp2=temp;
 		}else {
@@ -211,7 +200,7 @@ tube::intersect(ray const& r) const
 	}
 	if (scaleproduct(q, dir)!=0) {
 		double temp=(scaleproduct(q, r.getOrigin())+s2)/scaleproduct(q, dir);
-		math3d::point3d schnitt=r.getOrigin()+temp*dir;
+		point3d schnitt=r.getOrigin()+temp*dir;
 		if (length_two_points(schnitt, end_)<=r_) {
 			t_temp3=temp;
 		}else {

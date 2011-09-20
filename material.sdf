@@ -1,34 +1,39 @@
 # materials
-define material red           .1  0  0       1  0  0      1  1  1     2
-define material blue           0  0 .1       0  0  1      1  1  1     1
-define material green          0 .1  0       0  1  0      1  1  1     1
-define material yellow        .1 .1  0       1  1  0      1  1  1     2
-define material b_yellow      .3 .3 .18      1  1 .6      1  1  1     50
-define material white         .1 .1  0       1  1  0      1  1  1     50
-define material grey          .3 .3 .3      .8 .8 .8      1  1  1     200
+#		color    ambient      diffuse   specular   ref  opa  dens
+define material red      .1  0  0     1  0  0    1  1  1    1    0     1
+define material blue      0  0 .1     0  0  1    1  1  1    1    0     1
+define material green     0 .1  0     0  1  0    1  1  1    1    0     1
+define material yellow   .1 .1  0     1  1  0    1  1  1    2    0     1
+define material b_yellow .3 .3 .18    1  1 .6    1  1  1    50   0     1
+define material white    .1 .1  0     1  1  0    1  1  1    50   0     1
+define material grey     .3 .3 .3    .8 .8 .8    1  1  1    200  0     1
+define material glas     .0 .0 .0    .0 .0 .0   .3 .3 .3    300  .9   1.6
 
 # geometry
-define shape sphere ball         -5 0 -20       5                       grey
+	     object   name      location 1    loc 2       loc3     r   color
+define shape sphere ball         -5 0 -20                          5   grey
 define shape sphere auge         -1.7 3 -19.5   1                     b_yellow
 define shape sphere puschel      -7.8 -2.8 -16.2  1                     grey
 define shape triangle löffelh1   -3 3 -18     0 8 -21     -1 8.5 -21    grey
 define shape triangle löffelsp1  -0 7 -21.5   0 8 -21     -1 8.5 -21    grey
 define shape triangle löffelh2   -4 3 -18    -3.5 9 -21  -4.5 9.5 -21   grey
 define shape triangle löffelsp2  -3 8 -21.5  -3.5 9 -21  -4.5 9.5 -21   grey
-define shape triangle  tür1      14 -5 -100   34 -5 -100  34 30 -100    blue
-define shape triangle  tür2      14 -5 -100   34 30 -100  14 30 -100    blue
-#define shape triangle boden1     34 -5 -100   14 -5 -100  -6 -5 -20     white
-#define shape triangle boden2     34 -5 -100   -6 -5 -20   3.5 -5 -13    white
-#define shape tube     zylinder    4 -2 -30     8 -2  -30    5          red
-#define shape circle   kreis     -8 6 -20    -8 6 -23     -2 9 -20    b_yellow
-#define shape box      kiste       5 2 -18     1 -2 -22                  green
+define shape triangle  tür1      -30 -5 -50   10 -5 -50    10 30 -50    blue
+define shape triangle  tür2      -30 -5 -50   10 30 -50  -30 30 -50     blue
+define shape triangle  tür3       30 20 -50   10 30 -50   10 20 -50     blue
+define shape triangle  tür3       30 30 -50   10 30 -50   30 20 -50     blue
+define shape triangle boden1    300 -5 0   -300 -5 -300  -300 -5 0      green
+define shape triangle boden2    300 -5 -300  -300 -5 -300   300 -5 0    green
+define shape tube     zylinder    -20 -5 -49     -20 19  -49    2       red
+define shape circle   kreis     -8 6 -20     -8 6 -23    -2 9 -20    b_yellow
+define shape box      kiste       10 -1 -20        6 -5 -24             yellow
 
 define shape sphere reflexiontest 5 0 -20      3                      yellow
 define shape sphere reflexiontest 5 2 -20      2.5                      red
 
 # light - from right above
-#define light laterne 0 20 -20 .3 .3 .3 .8 .8 .8
-define light helle_laterne 0 20 -20 .3 .3 .3 .6 .6 .6
+define light laterne -20 21 -40 .3 .3 .3 1 1 1
+define light helle_laterne 30 20 -80 .3 .3 .2 .6 .6 .3
 define light sun -200 10 500 .4 .4 .4 .8 .8 .8
 #define light lamp -5 30 -6 0.3 0.3 0.3 0.4 0.4 0.4
 

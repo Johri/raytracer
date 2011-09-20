@@ -9,22 +9,26 @@ class material
 {
     public:
         material();
-        material(std::string const& name, color const& ambient, color const& defuse, color const& specular, float reflectivity);
+        material(std::string const& name, color const& ambient, color const& diffuse, color const& specular, float reflectivity, float opacity, float dansity);
         material(material const& copy);
         ~material();
         std::string const& getName() const;
         color const& get_ambient() const;
-        color const& get_defuse() const;
+        color const& get_diffuse() const;
         color const& get_specular() const;
         float get_reflectivity() const;
+        float get_opacity() const;
+        float get_dansity() const;
         void print_on(std::ostream& str) const;
 
     private:
     std::string name_;
     color ambient_;
-    color defuse_;
+    color diffuse_;
     color specular_;
     float reflectivity_;
+    float opacity_;
+    float dansity_;
 
 };
 

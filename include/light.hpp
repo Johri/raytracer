@@ -13,12 +13,12 @@ class light //Punktlichtquelle
 {
     public:
         light();
-        light(std::string const& name, point3d const& loc, color const& amb, color const& def);
+        light(std::string const& name, point3d const& loc, color const& amb, color const& diff);
         ~light();
 
         point3d const& get_location()const;
         color const& get_ambient()const;
-        color const& get_defuse()const;
+        color const& get_diffuse()const;
         void translate (double x, double y, double z);
         void rotate ();
 
@@ -28,7 +28,7 @@ class light //Punktlichtquelle
     std::string name_;
 	point3d location_; //Position
 	color ambient_;  //ambiente Lichtstärke
-	color defuse_;  //diffuse Lichtstärke
+	color diffuse_;  //diffuse Lichtstärke
 };
 
     std::ostream& operator <<(std::ostream& str, light const& l);
