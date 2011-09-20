@@ -126,7 +126,7 @@ renderer::shade(shape const& shap, ray const& r)
 
     }
 
-    color clr = ambient + (diffuse*0.5 + specular*0.4 + mirror_*0.1) * d;
+    color clr = ambient + (diffuse*0.8 + specular*0.2 + mirror_*0.1) * d;
 
     return clr;
 }

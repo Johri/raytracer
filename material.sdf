@@ -1,11 +1,11 @@
 # materials
-define material red           .1  0  0       1  0  0      1  1  1     1
+define material red           .1  0  0       1  0  0      1  1  1     2
 define material blue           0  0 .1       0  0  1      1  1  1     1
 define material green          0 .1  0       0  1  0      1  1  1     1
-define material yellow        .1 .1  0       1  1  0      1  1  1     1
+define material yellow        .1 .1  0       1  1  0      1  1  1     2
 define material b_yellow      .3 .3 .18      1  1 .6      1  1  1     50
 define material white         .1 .1  0       1  1  0      1  1  1     50
-define material grey          .3 .3 .3      .9 .9 .9      1  1  1     50
+define material grey          .3 .3 .3      .8 .8 .8      1  1  1     200
 
 # geometry
 define shape sphere ball         -5 0 -20       5                       grey
@@ -28,8 +28,8 @@ define shape sphere reflexiontest 5 2 -20      2.5                      red
 
 # light - from right above
 #define light laterne 0 20 -20 .3 .3 .3 .8 .8 .8
-define light helle_laterne 0 20 -20 .5 .5 .5 1 1 1
-define light sun -200 10 500 .5 .5 .5 .9 .9 .9
+define light helle_laterne 0 20 -20 .3 .3 .3 .6 .6 .6
+define light sun -200 10 500 .4 .4 .4 .8 .8 .8
 #define light lamp -5 30 -6 0.3 0.3 0.3 0.4 0.4 0.4
 
 # camera
