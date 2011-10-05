@@ -115,32 +115,59 @@ renderer::mirror(shape const& shap, ray const& ra)
 
     ray mr(ra.getSchnitt(shap.intersect(ra)), ra.getSchnitt(shap.intersect(ra))+r);
 
-for (std::list<light>::iterator il=scene_.lights_.begin(); il!=scene_.lights_.end(); ++il)
-{
-
-    for(std::list<shape*>::iterator i=scene_.shapes_.begin(); i!=scene_.shapes_.end(); ++i)
+/*
+    for(int timer=0;timer!=10;++timer)
     {
 
-        if( ((**i).intersect(mr)>0)&&((**i).intersect(mr)<=10000) )
+        for(std::list<shape*>::iterator i=scene_.shapes_.begin(); i!=scene_.shapes_.end(); ++i)
         {
 
+            if( ((**i).intersect(mr)>0)&&((**i).intersect(mr)<=10000) )
+            {
 
+                mc=shade((**i), mr);
+                return mc;
 
-            d = delta((**i), mr, (*il));
-            mc= (*i)->get_material().get_ambient() + ((*i)->get_material().get_diffuse() + (*i)->get_material().get_specular())  * d;
-            mc= mc*pow(std::max(0.0,scaleproduct(r, normalize(ra.getDir()))),(**i).get_material().get_reflectivity());
-            return mc;
-
-
+            }
+            else
+            {
+                return mc;
+            }
         }
-        else
+    }
+*/
+
+
+
+/*
+    for (std::list<light>::iterator il=scene_.lights_.begin(); il!=scene_.lights_.end(); ++il)
+    {
+
+        for(std::list<shape*>::iterator i=scene_.shapes_.begin(); i!=scene_.shapes_.end(); ++i)
         {
 
+            if( ((**i).intersect(mr)>0)&&((**i).intersect(mr)<=10000) )
+            {
+
+
+
+                d = delta((**i), mr, (*il));
+                mc= (*i)->get_material().get_ambient() + ((*i)->get_material().get_diffuse() + (*i)->get_material().get_specular()) *d;
+                mc= mc*pow(std::max(0.0,scaleproduct(r, normalize(ra.getDir()))),(**i).get_material().get_reflectivity());
+                return mc;
+
+
+            }
+            else
+            {
+                //return mc;
+            }
         }
-    }
 
     }
-    return mc;
+
+    //return mc;
+*/
 }
 
 
@@ -179,7 +206,7 @@ renderer::shade(shape const& shap, ray const& r)
     color refrection_= refrection(shap, r);
 
 
-    color clr = ambient + (diffuse*0.8 + specular*0.2 + mirror_*0.1);// + refrection_*opacity);
+    color clr = ambient + (diffuse*0.8 + specular*0.2);// + mirror_*0.1);// + refrection_*opacity);
 
     return clr;
 }

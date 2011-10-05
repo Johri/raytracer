@@ -85,7 +85,7 @@ public :
     // just start your raytracing algorithm from here
 
 
-    scene_.load_sdf("material.sdf");
+    scene_.load_sdf("scene.sdf");
     renderer_.set_scene(scene_);
     //std::cout << "read sdf file" << std::endl;
 

@@ -55,7 +55,7 @@ scene::load_sdf(std::string const& sdf)
 
             std::string sharp;
             std::string door;
-        	std::string def;
+        	std::string act;
         	std::string type;
         	std::string geo;
         	std::string name;
@@ -99,14 +99,14 @@ scene::load_sdf(std::string const& sdf)
             }
             else
             {
-                def=sharp;
-                if(def=="define")
+                act=sharp;
+                if(act=="define")
                 {
                     ss>>type;
                     if (type=="material")
                     {
                         ss>>mat_name;
-                        std::cout<<def<<" "<<type<<" "<<mat_name<<" ";
+                        std::cout<<act<<" "<<type<<" "<<mat_name<<" ";
                         float kar;
                         ss>>kar;
                         std::cout<<kar<<" ";
@@ -154,7 +154,7 @@ scene::load_sdf(std::string const& sdf)
                             if(geo=="box")
                             {
                                 ss>>name;
-                                std::cout<<def<<" "<<type<<" "<<geo<<" "<<name<<" ";
+                                std::cout<<act<<" "<<type<<" "<<geo<<" "<<name<<" ";
                                 double p1x;
                                 ss>>p1x;
                                 std::cout<<p1x<<" ";
@@ -186,7 +186,7 @@ scene::load_sdf(std::string const& sdf)
                                 if(geo=="sphere")
                                 {
                                     ss>>name;
-                                    std::cout<<def<<" "<<type<<" "<<geo<<" "<<name<<" ";
+                                    std::cout<<act<<" "<<type<<" "<<geo<<" "<<name<<" ";
                                     double x;
                                     ss>>x;
                                     std::cout<<x<<" ";
@@ -210,7 +210,7 @@ scene::load_sdf(std::string const& sdf)
                                     if(geo=="triangle")
                                     {
                                         ss>>name;
-                                        std::cout<<def<<" "<<type<<" "<<geo<<" "<<name<<" ";
+                                        std::cout<<act<<" "<<type<<" "<<geo<<" "<<name<<" ";
                                         double x1;
                                         ss>>x1;
                                         std::cout<<x1<<" ";
@@ -249,7 +249,7 @@ scene::load_sdf(std::string const& sdf)
                                         if(geo=="tube")
                                         {
                                             ss>>name;
-                                            std::cout<<def<<" "<<type<<" "<<geo<<" "<<name<<" ";
+                                            std::cout<<act<<" "<<type<<" "<<geo<<" "<<name<<" ";
                                             double x1;
                                             ss>>x1;
                                             std::cout<<x1<<" ";
@@ -281,7 +281,7 @@ scene::load_sdf(std::string const& sdf)
                                             if(geo=="circle")
                                             {
                                                 ss>>name;
-                                                std::cout<<def<<" "<<type<<" "<<geo<<" "<<name<<" ";
+                                                std::cout<<act<<" "<<type<<" "<<geo<<" "<<name<<" ";
                                                 double x1;
                                                 ss>>x1;
                                                 std::cout<<x1<<" ";
@@ -325,7 +325,7 @@ scene::load_sdf(std::string const& sdf)
                             if(type=="light")
                             {
                                 ss>>name;
-                                std::cout<<def<<" "<<type<<" "<<name<<" ";
+                                std::cout<<act<<" "<<type<<" "<<name<<" ";
                                 double x;
                                 ss>>x;
                                 std::cout<<x<<" ";
@@ -361,7 +361,7 @@ scene::load_sdf(std::string const& sdf)
                                 if(type=="camera")
                                 {
                                     ss>>name;
-                                    std::cout<<def<<" "<<type<<" "<<name<<" ";
+                                    std::cout<<act<<" "<<type<<" "<<name<<" ";
                                     double x;
                                     ss>>x;
                                     double y;
@@ -384,11 +384,11 @@ scene::load_sdf(std::string const& sdf)
                 }
                 else
                 {
-                    if(def=="render")
+                    if(act=="render")
                     {
                         std::string wtr;
                         ss>>wtr;
-                        std::cout<<def<<" "<<wtr<<" ";
+                        std::cout<<act<<" "<<wtr<<" ";
                         std::string img;
                         ss>>img;
                         std::cout<<img<<" ";
